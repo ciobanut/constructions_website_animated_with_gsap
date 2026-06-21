@@ -1,0 +1,116 @@
+---
+// ============================================================
+// STATS DATA — Edit these values directly
+// ============================================================
+interface StatItem {
+  label: string;
+  target: number;
+  suffix: string;
+}
+
+const stats: StatItem[] = [
+  { label: "YEARS", target: 13, suffix: "+" },
+  { label: "CUSTOMERS", target: 50, suffix: "+" },
+  { label: "PROJECTS", target: 85, suffix: "+" },
+  { label: "TOTAL PROJECT AREA", target: 650000, suffix: " m²" },
+];
+---
+
+<section id="stats-section" class="py-20 md:py-28 bg-[#0c0c0c]">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="flex flex-wrap justify-center gap-12 lg:gap-16">
+      {
+        stats.map((stat) => (
+          <div class="stats-item text-center">
+            <div
+              class="stat-number font-['Barlow_Condensed'] font-bold text-amber-500 leading-none"
+              data-target={stat.target}
+              data-suffix={stat.suffix}
+              aria-live="polite"
+            >
+              0{stat.suffix}
+            </div>
+            <p class="stat-label mt-3 font-['Barlow_Condensed'] text-xs uppercase tracking-[0.12em] text-gray-400">
+              {stat.label}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from "gsap";
+
+  function formatNumber(n: number) {
+    return n.toLocaleString("en-US");
+  }
+
+  // Larger numbers increment in bigger steps so animation stays snappy
+  function getStep(target: number) {
+    if (target >= 100000) return 100000;
+    if (target >= 10000) return 10000;
+    if (target >= 1000) return 1000;
+    if (target >= 100) return 100;
+    if (target >= 10) return 10;
+    return 1;
+  }
+
+  const section = document.getElementById("stats-section");
+  if (!section) throw new Error("Stats section not found");
+
+  let animated = false;
+
+  var observer = new IntersectionObserver(
+    function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting && !animated) {
+          animated = true;
+          observer.disconnect();
+
+          var numbers = section.querySelectorAll(".stat-number");
+          numbers.forEach(function (el, i) {
+            var target = parseInt(el.getAttribute("data-target") || "0", 10);
+            var suffix = el.getAttribute("data-suffix") || "";
+            var obj = { val: 0 };
+
+            gsap.to(obj, {
+              val: target,
+              duration: 2,
+              delay: i * 0.2,
+              ease: "power2.out",
+              onUpdate: function () {
+                var step = getStep(target);
+                var displayVal = Math.round(obj.val / step) * step;
+                el.textContent = formatNumber(displayVal) + suffix;
+              },
+            });
+          });
+
+          // Subtle entrance for the stat items
+          gsap.from(".stats-item", {
+            opacity: 0,
+            y: 30,
+            duration: 0.6,
+            stagger: 0.15,
+            ease: "power2.out",
+            delay: 0.1,
+          });
+        }
+      });
+    },
+    { threshold: 0.3 },
+  );
+
+  observer.observe(section);
+</script>
+
+<style>
+  .stat-number {
+    font-size: clamp(3rem, 6vw, 4.5rem);
+  }
+  .stats-item {
+    will-change: transform;
+  }
+</style>

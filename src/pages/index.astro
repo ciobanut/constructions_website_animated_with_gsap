@@ -4,6 +4,7 @@ import Layout from '../layouts/Layout.astro';
 import NavBar from '../components/NavBar.astro';
 import AnimatedTitle from '../components/AnimatedTitle.astro';
 import ProjectCard from '../components/ProjectCard.astro';
+import StatsSection from '../components/StatsSection.astro';
 
 const title = 'Iraqi Construction';
 const subtitle = 'Building the future with quality and trust';
@@ -34,6 +35,8 @@ const projects = await getCollection('projects');
       <p class="subtitle">{subtitle}</p>
     </div>
   </section>
+
+  <StatsSection />
 
   <!-- Projects Section -->
   <section id="projects" class="projects-section">
