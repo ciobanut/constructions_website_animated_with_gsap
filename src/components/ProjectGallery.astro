@@ -10,7 +10,7 @@ const { images, title } = Astro.props;
 {
   images.length > 0 && (
     <section class="py-16">
-      <h2 class="text-2xl font-['Barlow_Condensed'] font-bold uppercase tracking-wide text-gray-800 mb-8">
+      <h2 class="text-2xl font-['Barlow_Condensed'] font-bold uppercase tracking-wide text-gray-200 mb-8">
         Project Gallery
       </h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -19,7 +19,7 @@ const { images, title } = Astro.props;
             <a
               href={img}
               target="_blank"
-              class="gallery-item group relative aspect-[4/3] overflow-hidden rounded-xl bg-gray-100 block"
+              class="gallery-item group relative aspect-[4/3] overflow-hidden rounded-xl bg-[#1a1a1a] block"
             >
               <img
                 src={img}

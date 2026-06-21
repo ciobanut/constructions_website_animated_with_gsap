@@ -1,0 +1,149 @@
+---
+const links = [
+  { label: 'Home', href: '#home' },
+  { label: 'Projects', href: '#projects' },
+  { label: 'Services', href: '#services' },
+  { label: 'Contacts', href: '#contacts' },
+];
+---
+
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="/" class="logo">
+      <img src="/logo.svg" alt="ConstIQ logo" class="logo-img" width="32" height="36" />
+      <span class="logo-text">ConstIQ</span>
+    </a>
+
+    <ul class="nav-links">
+      {links.map((link) => (
+        <li>
+          <a href={link.href}>{link.label}</a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</nav>
+
+<script>
+  import { gsap } from 'gsap';
+
+  const navbar = document.getElementById('navbar')!;
+  let lastScrollY = 0;
+  let ticking = false;
+
+  // Show on first mount
+  gsap.set(navbar, { y: 0 });
+
+  const handleScroll = () => {
+    const currentScrollY = window.scrollY;
+
+    if (currentScrollY <= 10) {
+      // At the very top — always show
+      gsap.to(navbar, { y: 0, duration: 0.35, ease: 'power2.out', overwrite: 'auto' });
+    } else if (currentScrollY > lastScrollY) {
+      // Scrolling down — hide
+      gsap.to(navbar, { y: -100, duration: 0.35, ease: 'power2.out', overwrite: 'auto' });
+    } else {
+      // Scrolling up — show
+      gsap.to(navbar, { y: 0, duration: 0.35, ease: 'power2.out', overwrite: 'auto' });
+    }
+
+    lastScrollY = currentScrollY;
+    ticking = false;
+  };
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(handleScroll);
+      ticking = true;
+    }
+  });
+</script>
+
+<style>
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    padding: 1rem 2rem;
+    /* Transparent by default */
+    background: transparent;
+    pointer-events: auto;
+  }
+
+  .nav-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+  }
+
+  .logo-img {
+    width: 32px;
+    height: auto;
+    filter: brightness(0) invert(1);
+  }
+
+  .logo-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #fff;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
+  }
+
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-links a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
+  }
+
+  .nav-links a:hover {
+    color: #f59e0b;
+  }
+
+  /* Mobile responsiveness */
+  @media (max-width: 640px) {
+    .navbar {
+      padding: 0.75rem 1rem;
+    }
+
+    .logo-text {
+      font-size: 1.2rem;
+    }
+
+    .nav-links {
+      gap: 1rem;
+    }
+
+    .nav-links a {
+      font-size: 0.85rem;
+    }
+  }
+</style>
