@@ -3,8 +3,8 @@ import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import NavBar from '../components/NavBar.astro';
 import AnimatedTitle from '../components/AnimatedTitle.astro';
-import ProjectCard from '../components/ProjectCard.astro';
 import StatsSection from '../components/StatsSection.astro';
+import HorizontalGallery from '../components/HorizontalGallery.astro';
 
 const title = 'Iraqi Construction';
 const subtitle = 'Building the future with quality and trust';
@@ -38,33 +38,7 @@ const projects = await getCollection('projects');
 
   <StatsSection />
 
-  <!-- Projects Section -->
-  <section id="projects" class="projects-section">
-    <div class="max-w-7xl mx-auto px-6 py-20">
-      <div class="text-center mb-16">
-        <span class="text-gray-400 text-sm font-semibold uppercase tracking-widest">Our Work</span>
-        <h2 class="text-4xl md:text-5xl font-['Barlow_Condensed'] font-bold uppercase tracking-wide text-gray-100 mt-3">
-          Featured Projects
-        </h2>
-        <p class="text-gray-400 mt-4 max-w-2xl mx-auto">
-          Delivering quality construction and design solutions across Iraq and beyond
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {projects.map((project) => (
-          <ProjectCard
-            title={project.data.title}
-            slug={project.data.slug}
-            coverImage={project.data.coverImage}
-            location={project.data.location}
-            constructionArea={project.data.constructionArea}
-            category={project.data.category}
-          />
-        ))}
-      </div>
-    </div>
-  </section>
+  <HorizontalGallery projects={projects} />
 </Layout>
 
 <script>
@@ -150,7 +124,4 @@ const projects = await getCollection('projects');
     text-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
   }
 
-  .projects-section {
-    background: #0c0c0c;
-  }
 </style>
