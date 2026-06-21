@@ -6,12 +6,22 @@
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<title>Iraqi Construction</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;700&family=Barlow:wght@300;400&display=swap"
+			rel="stylesheet"
+		/>
 	</head>
 	<body>
 		<slot />
 	</body>
 </html>
+
+<style is:global>
+	@import "tailwindcss";
+</style>
 
 <style>
 	html,
@@ -19,5 +29,6 @@
 		margin: 0;
 		width: 100%;
 		height: 100%;
+		font-family: 'Barlow', sans-serif;
 	}
 </style>
