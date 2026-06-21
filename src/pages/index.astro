@@ -1,11 +1,46 @@
 ---
 import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
 <Layout>
 	<Welcome />
+
+	<div class="gsap-test">
+		<div class="box">GSAP</div>
+	</div>
 </Layout>
+
+<script>
+	import { gsap } from 'gsap';
+
+	gsap.to('.box', {
+		x: 200,
+		rotation: 360,
+		duration: 2,
+		ease: 'power2.inOut',
+		yoyo: true,
+		repeat: -1,
+	});
+</script>
+
+<style>
+	.gsap-test {
+		position: fixed;
+		bottom: 120px;
+		left: 16px;
+	}
+
+	.box {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 80px;
+		height: 80px;
+		background: linear-gradient(135deg, #3245ff, #bc52ee);
+		color: white;
+		font-family: sans-serif;
+		font-weight: bold;
+		border-radius: 12px;
+	}
+</style>
