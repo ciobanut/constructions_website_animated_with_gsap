@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import AnimatedTitle from '../components/AnimatedTitle.astro';
 
 const title = 'Iraqi Construction';
 const subtitle = 'Building the future with quality and trust';
@@ -21,7 +22,7 @@ const subtitle = 'Building the future with quality and trust';
 
 		<!-- Hero content -->
 		<div class="content">
-			<h1 class="title">{title}</h1>
+			<AnimatedTitle text={title} />
 			<p class="subtitle">{subtitle}</p>
 		</div>
 	</section>
@@ -30,10 +31,11 @@ const subtitle = 'Building the future with quality and trust';
 <script>
 	import { gsap } from 'gsap';
 
-	gsap.from('.title', {
+	gsap.from('.animated-title .char', {
 		y: 60,
 		opacity: 0,
-		duration: 1.2,
+		duration: 0.8,
+		stagger: 0.04,
 		ease: 'power3.out',
 	});
 	gsap.from('.subtitle', {
@@ -95,16 +97,6 @@ const subtitle = 'Building the future with quality and trust';
 		text-align: center;
 		color: white;
 		padding: 0 24px;
-	}
-
-	.title {
-		font-size: clamp(2.5rem, 8vw, 5.5rem);
-		font-weight: 700;
-		font-family: 'Barlow Condensed', sans-serif;
-		margin: 0;
-		letter-spacing: 0.05em;
-		text-transform: uppercase;
-		text-shadow: 0 2px 20px rgba(0, 0, 0, 0.4);
 	}
 
 	.subtitle {
