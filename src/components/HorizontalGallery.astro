@@ -50,33 +50,77 @@ const projectCount = projects.length;
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
   gsap.registerPlugin(ScrollTrigger);
 
-  const track = document.querySelector<HTMLElement>('.projects-track');
-  const container = document.querySelector<HTMLElement>('.projects-container');
-  const introContent = document.querySelector<HTMLElement>('.intro-content');
-  const viewAllBtn = document.querySelector<HTMLButtonElement>('[data-view-all]');
+  (function initGallery() {
+    const container = document.querySelector<HTMLElement>('.projects-container');
+    const track = document.querySelector<HTMLElement>('.projects-track');
+    const slides = gsap.utils.toArray<HTMLElement>('.project-slide');
+    const introContent = document.querySelector<HTMLElement>('.intro-content');
+    const viewAllBtn = document.querySelector<HTMLButtonElement>('[data-view-all]');
 
-  if (track && container) {
+    if (!track || !container || slides.length === 0) return;
+
     const getScrollDistance = () => track.scrollWidth - window.innerWidth;
+    const totalSlides = slides.length;
+    const numTransitions = totalSlides - 1;
+    const transitionDur = 1 / numTransitions;
 
-    // Animația principală — track-ul se mișcă orizontal
-    gsap.to(track, {
-      xPercent: () => {
-        const d = getScrollDistance();
-        return -(d / track.scrollWidth) * 100;
-      },
-      ease: 'none',
+    // 1. Master timeline cu ScrollTrigger
+    const tl = gsap.timeline({
       scrollTrigger: {
         id: 'gallery-horizontal',
         trigger: container,
         pin: true,
         start: 'top top',
         end: () => `+=${getScrollDistance()}`,
-        scrub: 1,
+        scrub: 1.5,
         invalidateOnRefresh: true,
       },
+      defaults: { ease: 'none' },
     });
 
-    // Animații de intrare pentru intro slide
+    // 2. Mișcarea orizontală a track-ului
+    tl.to(track, {
+      xPercent: () => {
+        const d = getScrollDistance();
+        return -(d / track.scrollWidth) * 100;
+      },
+      duration: 1,
+      ease: 'none',
+    }, 0);
+
+    // 3. Tranziții per slide — efect parallax + scale
+    slides.forEach((slide, i) => {
+      if (i === 0) return;
+
+      const startTime = i * transitionDur;
+
+      // Slide curent iese: scale + parallax (mai încet) + fade
+      tl.to(slide, {
+        scale: 0.7,
+        x: '8vw',
+        opacity: 0,
+        duration: transitionDur * 0.7,
+        ease: 'power2.in',
+      }, startTime);
+
+      // Următorul slide intră (viteză normală, vine din dreapta)
+      if (i < totalSlides - 1) {
+        const nextSlide = slides[i + 1];
+        tl.fromTo(nextSlide, {
+          scale: 0.7,
+          x: '15vw',
+          opacity: 0,
+        }, {
+          scale: 1,
+          x: 0,
+          opacity: 1,
+          duration: transitionDur * 0.7,
+          ease: 'power2.out',
+        }, startTime);
+      }
+    });
+
+    // 4. Intro slide — animație de intrare
     if (introContent) {
       const introChildren = introContent.children;
       gsap.from(introChildren, {
@@ -93,7 +137,7 @@ const projectCount = projects.length;
       });
     }
 
-    // Click pe "View All Projects" → scroll la primul proiect
+    // 5. Click "View All Projects" → scroll la primul proiect
     if (viewAllBtn) {
       viewAllBtn.addEventListener('click', () => {
         const st = ScrollTrigger.getById('gallery-horizontal');
@@ -103,7 +147,7 @@ const projectCount = projects.length;
         }
       });
     }
-  }
+  })();
 </script>
 
 <style>
@@ -198,6 +242,7 @@ const projectCount = projects.length;
     flex-shrink: 0;
     display: block;
     overflow: hidden;
+    will-change: transform, opacity;
   }
 
   .project-slide img {
