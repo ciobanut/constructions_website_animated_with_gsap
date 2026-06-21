@@ -35,7 +35,7 @@ const metaDescription = data.location ? `${data.title} — ${data.location}` : d
     />
     <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
     <div class="absolute bottom-0 left-0 right-0 p-8 md:p-16">
-      <span class="inline-block text-amber-400 text-sm font-semibold uppercase tracking-widest mb-2 bg-black/30 backdrop-blur-sm px-3 py-1 rounded-full">
+      <span class="inline-block text-gray-300 text-sm font-semibold uppercase tracking-widest mb-2 bg-black/30 backdrop-blur-sm px-3 py-1 rounded-full">
         {data.category}
       </span>
       <h1 class="text-4xl md:text-5xl lg:text-6xl font-['Barlow_Condensed'] font-bold text-white uppercase tracking-wide">
@@ -90,7 +90,7 @@ const metaDescription = data.location ? `${data.title} — ${data.location}` : d
       {prevProject ? (
         <a
           href={`/proiecte/${prevProject.data.slug}`}
-          class="flex items-center gap-3 group text-gray-400 hover:text-amber-400 transition-colors"
+          class="flex items-center gap-3 group text-gray-500 hover:text-white transition-colors duration-300"
         >
           <svg class="w-5 h-5 transition-transform group-hover:-translate-x-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M15 6l-6 6l6 6" />
@@ -105,7 +105,7 @@ const metaDescription = data.location ? `${data.title} — ${data.location}` : d
       {nextProject ? (
         <a
           href={`/proiecte/${nextProject.data.slug}`}
-          class="flex items-center gap-3 group text-gray-400 hover:text-amber-400 transition-colors text-right"
+          class="flex items-center gap-3 group text-gray-500 hover:text-white transition-colors duration-300 text-right"
         >
           <div>
             <p class="text-xs uppercase tracking-widest text-gray-400">Next</p>
