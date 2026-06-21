@@ -6,21 +6,26 @@ export interface Props {
 }
 
 const { projects } = Astro.props;
+const projectCount = projects.length;
 ---
 
 <section id="projects" class="projects-section">
   <div class="projects-container">
-    <!-- Header — dispare treptat la scroll -->
-    <div class="projects-header">
-      <span class="section-label">Our Work</span>
-      <h2 class="section-title">Featured Projects</h2>
-      <p class="section-desc">
-        Delivering quality construction and design solutions across Iraq and beyond
-      </p>
-    </div>
-
-    <!-- Track orizontal — un slide per proiect -->
+    <!-- Track orizontal — intro slide + un slide per proiect -->
     <div class="projects-track">
+      <!-- Intro Slide — fără background, cu header și animații -->
+      <div class="project-slide intro-slide">
+        <div class="intro-content">
+          <span class="intro-label">Our Work</span>
+          <h2 class="intro-title">Featured Projects</h2>
+          <p class="intro-desc">
+            Delivering quality construction and design solutions across Iraq and beyond
+          </p>
+          <button class="view-all-btn" data-view-all>View All Projects</button>
+        </div>
+      </div>
+
+      <!-- Proiecte -->
       {projects.map((project) => (
         <a href={`/proiecte/${project.data.slug}`} class="project-slide">
           <img
@@ -47,7 +52,8 @@ const { projects } = Astro.props;
 
   const track = document.querySelector<HTMLElement>('.projects-track');
   const container = document.querySelector<HTMLElement>('.projects-container');
-  const header = document.querySelector<HTMLElement>('.projects-header');
+  const introContent = document.querySelector<HTMLElement>('.intro-content');
+  const viewAllBtn = document.querySelector<HTMLButtonElement>('[data-view-all]');
 
   if (track && container) {
     const getScrollDistance = () => track.scrollWidth - window.innerWidth;
@@ -60,6 +66,7 @@ const { projects } = Astro.props;
       },
       ease: 'none',
       scrollTrigger: {
+        id: 'gallery-horizontal',
         trigger: container,
         pin: true,
         start: 'top top',
@@ -69,71 +76,43 @@ const { projects } = Astro.props;
       },
     });
 
-    // Fade-out pentru header
-    if (header) {
-      gsap.to(header, {
+    // Animații de intrare pentru intro slide
+    if (introContent) {
+      const introChildren = introContent.children;
+      gsap.from(introChildren, {
+        y: 60,
         opacity: 0,
-        scale: 0.95,
+        duration: 1,
+        stagger: 0.15,
+        ease: 'power3.out',
         scrollTrigger: {
           trigger: container,
-          start: 'top top',
-          end: '+=300',
-          scrub: 1,
+          start: 'top 90%',
+          toggleActions: 'play none none none',
         },
+      });
+    }
+
+    // Click pe "View All Projects" → scroll la primul proiect
+    if (viewAllBtn) {
+      viewAllBtn.addEventListener('click', () => {
+        const st = ScrollTrigger.getById('gallery-horizontal');
+        if (st) {
+          const targetY = st.start + window.innerWidth;
+          window.scrollTo({ top: targetY, behavior: 'smooth' });
+        }
       });
     }
   }
 </script>
 
 <style>
-  .projects-section {
-    /* ocupă tot viewport-ul când e pinned */
-  }
-
   .projects-container {
     position: relative;
     width: 100vw;
     height: 100dvh;
     overflow: hidden;
     background: #0c0c0c;
-  }
-
-  .projects-header {
-    position: absolute;
-    inset: 0;
-    z-index: 10;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    pointer-events: none;
-    padding: 2rem;
-  }
-
-  .section-label {
-    color: #9ca3af;
-    font-size: 0.875rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-
-  .section-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: clamp(2rem, 5vw, 4rem);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: #f3f4f6;
-    margin-top: 0.75rem;
-  }
-
-  .section-desc {
-    color: #9ca3af;
-    margin-top: 1rem;
-    max-width: 32rem;
-    font-size: clamp(0.9rem, 1.5vw, 1.1rem);
   }
 
   .projects-track {
@@ -143,6 +122,76 @@ const { projects } = Astro.props;
     will-change: transform;
   }
 
+  /* ───────── Intro Slide ───────── */
+  .intro-slide {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    background: #0c0c0c;
+  }
+
+  .intro-content {
+    text-align: center;
+    max-width: 42rem;
+    padding: 2rem;
+    justify-self: center;
+  }
+
+  .intro-label {
+    display: block;
+    color: #9ca3af;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+  }
+
+  .intro-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #f3f4f6;
+    margin: 0;
+    line-height: 1.1;
+  }
+
+  .intro-desc {
+    color: #9ca3af;
+    margin-top: 1rem;
+    font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+    line-height: 1.6;
+  }
+
+  .view-all-btn {
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 0.85rem 2.5rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #0c0c0c;
+    background: #f3f4f6;
+    border: none;
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: transform 0.3s ease, background 0.3s ease;
+  }
+
+  .view-all-btn:hover {
+    transform: scale(1.05);
+    background: #ffffff;
+  }
+
+  .view-all-btn:active {
+    transform: scale(0.97);
+  }
+
+  /* ───────── Project Slides ───────── */
   .project-slide {
     position: relative;
     width: 100vw;
@@ -197,6 +246,10 @@ const { projects } = Astro.props;
     }
     .slide-title {
       font-size: 1.5rem;
+    }
+    .view-all-btn {
+      padding: 0.75rem 2rem;
+      font-size: 1rem;
     }
   }
 </style>
