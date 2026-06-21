@@ -12,6 +12,7 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@tabler/icons": "^3.44.0",
     "@tailwindcss/vite": "^4.3.1",
     "astro": "^6.4.7",
     "gsap": "^3.15.0",

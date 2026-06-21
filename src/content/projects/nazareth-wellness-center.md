@@ -7,7 +7,7 @@ constructionArea: "2,210 sqm"
 client: "MECRI"
 status: "Completed"
 category: "Construction"
-coverImage: "/projects/nazareth-wellness-center/cover.jpg"
+coverImage: "/projects/nazareth-wellness-center/cover.avif"
 galleryImages: []
 ---
 

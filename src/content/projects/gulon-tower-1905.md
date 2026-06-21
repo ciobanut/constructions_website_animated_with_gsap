@@ -7,7 +7,7 @@ constructionArea: "250 sqm"
 client: "Sabri Ozel Group"
 status: "Completed"
 category: "Construction"
-coverImage: "/projects/gulon-tower-1905/cover.jpg"
+coverImage: "/projects/gulon-tower-1905/cover.avif"
 galleryImages: []
 ---
 
