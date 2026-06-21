@@ -1,0 +1,59 @@
+---
+export interface Props {
+  images: string[];
+  title: string;
+}
+
+const { images, title } = Astro.props;
+---
+
+{
+  images.length > 0 && (
+    <section class="py-16">
+      <h2 class="text-2xl font-['Barlow_Condensed'] font-bold uppercase tracking-wide text-gray-800 mb-8">
+        Project Gallery
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {
+          images.map((img, i) => (
+            <a
+              href={img}
+              target="_blank"
+              class="gallery-item group relative aspect-[4/3] overflow-hidden rounded-xl bg-gray-100 block"
+            >
+              <img
+                src={img}
+                alt={`${title} - Image ${i + 1}`}
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                loading={i < 4 ? 'eager' : 'lazy'}
+              />
+              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+            </a>
+          ))
+        }
+      </div>
+    </section>
+  )
+}
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  const items = document.querySelectorAll<HTMLElement>('.gallery-item');
+  items.forEach((item, i) => {
+    gsap.from(item, {
+      y: 40,
+      opacity: 0,
+      duration: 0.6,
+      delay: i * 0.05,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: item,
+        start: 'top 90%',
+        toggleActions: 'play none none none',
+      },
+    });
+  });
+</script>

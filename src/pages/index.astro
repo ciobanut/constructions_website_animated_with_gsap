@@ -1,111 +1,149 @@
 ---
+import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import AnimatedTitle from '../components/AnimatedTitle.astro';
+import ProjectCard from '../components/ProjectCard.astro';
 
 const title = 'Iraqi Construction';
 const subtitle = 'Building the future with quality and trust';
+const projects = await getCollection('projects');
 ---
 
 <Layout>
-	<section class="hero">
-		<!-- YouTube video background -->
-		<div class="video-wrapper">
-			<iframe
-				src="https://www.youtube.com/embed/Dj2jErpwQQk?autoplay=1&loop=1&mute=1&controls=0&playsinline=1&modestbranding=1&rel=0&playlist=Dj2jErpwQQk"
-				allow="autoplay; encrypted-media"
-				allowfullscreen
-			></iframe>
-		</div>
+  <!-- Hero Section -->
+  <section class="hero">
+    <!-- YouTube video background -->
+    <div class="video-wrapper">
+      <iframe
+        src="https://www.youtube.com/embed/Dj2jErpwQQk?autoplay=1&loop=1&mute=1&controls=0&playsinline=1&modestbranding=1&rel=0&playlist=Dj2jErpwQQk"
+        allow="autoplay; encrypted-media"
+        allowfullscreen
+      ></iframe>
+    </div>
 
-		<!-- Dark overlay for readability -->
-		<div class="overlay"></div>
+    <!-- Dark overlay for readability -->
+    <div class="overlay"></div>
 
-		<!-- Hero content -->
-		<div class="content">
-			<AnimatedTitle text={title} />
-			<p class="subtitle">{subtitle}</p>
-		</div>
-	</section>
+    <!-- Hero content -->
+    <div class="content">
+      <AnimatedTitle text={title} />
+      <p class="subtitle">{subtitle}</p>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section id="proiecte" class="projects-section">
+    <div class="max-w-7xl mx-auto px-6 py-20">
+      <div class="text-center mb-16">
+        <span class="text-amber-600 text-sm font-semibold uppercase tracking-widest">Our Work</span>
+        <h2 class="text-4xl md:text-5xl font-['Barlow_Condensed'] font-bold uppercase tracking-wide text-gray-900 mt-3">
+          Featured Projects
+        </h2>
+        <p class="text-gray-500 mt-4 max-w-2xl mx-auto">
+          Delivering quality construction and design solutions across Iraq and beyond
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {projects.map((project) => (
+          <ProjectCard
+            title={project.data.title}
+            slug={project.data.slug}
+            coverImage={project.data.coverImage}
+            location={project.data.location}
+            constructionArea={project.data.constructionArea}
+            category={project.data.category}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
 </Layout>
 
 <script>
-	import { gsap } from 'gsap';
+  import { gsap } from 'gsap';
 
-	gsap.from('.animated-title .char', {
-		y: 60,
-		opacity: 0,
-		duration: 0.8,
-		stagger: 0.04,
-		ease: 'power3.out',
-	});
-	gsap.from('.subtitle', {
-		y: 30,
-		opacity: 0,
-		duration: 1,
-		delay: 0.4,
-		ease: 'power3.out',
-	});
+  gsap.from('.animated-title .char', {
+    y: 60,
+    opacity: 0,
+    duration: 0.8,
+    stagger: 0.04,
+    ease: 'power3.out',
+  });
+  gsap.from('.subtitle', {
+    y: 30,
+    opacity: 0,
+    duration: 1,
+    delay: 0.4,
+    ease: 'power3.out',
+  });
 </script>
 
 <style>
-	.hero {
-		position: relative;
-		width: 100%;
-		height: 100vh;
-		overflow: hidden;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
+  .hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-	.video-wrapper {
-		position: absolute;
-		inset: 0;
-		width: 100%;
-		height: 100%;
-	}
+  .video-wrapper {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
 
-	.video-wrapper iframe {
-		width: 100%;
-		height: 100%;
-		border: 0;
-		/* Crop to cover like object-fit: cover */
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		width: 177.78vh; /* 16:9 aspect-ratio height-relative */
-		height: 56.25vw; /* 16:9 aspect-ratio width-relative */
-		min-width: 100%;
-		min-height: 100%;
-	}
+  .video-wrapper iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    /* Crop to cover like object-fit: cover */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 177.78vh;
+    /* 16:9 aspect-ratio height-relative */
+    height: 56.25vw;
+    /* 16:9 aspect-ratio width-relative */
+    min-width: 100%;
+    min-height: 100%;
+  }
 
-	.overlay {
-		position: absolute;
-		inset: 0;
-		background: linear-gradient(
-			to bottom,
-			rgba(0, 0, 0, 0.55),
-			rgba(0, 0, 0, 0.3)
-		);
-		z-index: 1;
-	}
+  .overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.55),
+      rgba(0, 0, 0, 0.3)
+    );
+    z-index: 1;
+  }
 
-	.content {
-		position: relative;
-		z-index: 2;
-		text-align: center;
-		color: white;
-		padding: 0 24px;
-	}
+  .content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: white;
+    padding: 0 24px;
+  }
 
-	.subtitle {
-		font-size: clamp(1rem, 2.5vw, 1.5rem);
-		font-weight: 300;
-		font-family: 'Barlow', sans-serif;
-		margin: 16px 0 0;
-		opacity: 0.9;
-		letter-spacing: 0.06em;
-		text-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
-	}
+  .subtitle {
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
+    font-weight: 300;
+    font-family: 'Barlow', sans-serif;
+    margin: 16px 0 0;
+    opacity: 0.9;
+    letter-spacing: 0.06em;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  .projects-section {
+    background: #ffffff;
+  }
 </style>

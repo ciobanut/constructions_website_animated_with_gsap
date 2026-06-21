@@ -1,0 +1,84 @@
+---
+export interface Props {
+  title: string;
+  slug: string;
+  coverImage: string;
+  location: string;
+  constructionArea: string;
+  category: string;
+}
+
+const { title, slug, coverImage, location, constructionArea, category } = Astro.props;
+---
+
+<a
+  href={`/proiecte/${slug}`}
+  class="project-card group block relative overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer"
+>
+  <!-- Image -->
+  <div class="relative aspect-[4/3] overflow-hidden">
+    <img
+      src={coverImage}
+      alt={title}
+      class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+      loading="lazy"
+    />
+    <!-- Category badge -->
+    <span class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-gray-900 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">
+      {category}
+    </span>
+  </div>
+
+  <!-- Info -->
+  <div class="p-5">
+    <h3 class="text-xl font-bold font-['Barlow_Condensed'] uppercase tracking-wide text-gray-900 group-hover:text-amber-600 transition-colors duration-300">
+      {title}
+    </h3>
+    <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-500">
+      <span class="inline-flex items-center gap-1">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        {location}
+      </span>
+      <span class="inline-flex items-center gap-1">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5" />
+        </svg>
+        {constructionArea}
+      </span>
+    </div>
+  </div>
+</a>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  const cards = document.querySelectorAll<HTMLElement>('.project-card');
+  cards.forEach((card, i) => {
+    gsap.from(card, {
+      y: 60,
+      opacity: 0,
+      duration: 0.8,
+      delay: 0.1 + i * 0.08,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: card,
+        start: 'top 85%',
+        toggleActions: 'play none none none',
+      },
+    });
+  });
+</script>
+
+<style>
+  .project-card {
+    will-change: transform;
+  }
+  .project-card:hover {
+    transform: translateY(-4px);
+  }
+</style>

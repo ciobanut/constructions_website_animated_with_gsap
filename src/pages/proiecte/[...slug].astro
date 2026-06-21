@@ -1,0 +1,131 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import ProjectGallery from '../../components/ProjectGallery.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({
+    params: { slug: project.data.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+const { data } = project;
+const allProjects = await getCollection('projects');
+const currentIndex = allProjects.findIndex((p) => p.data.slug === data.slug);
+const prevProject = currentIndex > 0 ? allProjects[currentIndex - 1] : null;
+const nextProject = currentIndex < allProjects.length - 1 ? allProjects[currentIndex + 1] : null;
+const pageTitle = `${data.title} | Iraqi Construction`;
+const metaDescription = data.location ? `${data.title} — ${data.location}` : data.title;
+---
+
+<Layout>
+  <title>{pageTitle}</title>
+  <meta name="description" content={metaDescription} />
+
+  <!-- Hero Cover -->
+  <section class="relative h-[50vh] min-h-[320px] overflow-hidden">
+    <img
+      src={data.coverImage}
+      alt={data.title}
+      class="absolute inset-0 w-full h-full object-cover"
+    />
+    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+    <div class="absolute bottom-0 left-0 right-0 p-8 md:p-16">
+      <span class="inline-block text-amber-400 text-sm font-semibold uppercase tracking-widest mb-2 bg-black/30 backdrop-blur-sm px-3 py-1 rounded-full">
+        {data.category}
+      </span>
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-['Barlow_Condensed'] font-bold text-white uppercase tracking-wide">
+        {data.title}
+      </h1>
+    </div>
+
+    <!-- Back button -->
+    <a
+      href="/#proiecte"
+      class="absolute top-6 left-6 text-white/80 hover:text-white flex items-center gap-2 text-sm font-medium transition-colors bg-black/20 backdrop-blur-sm px-4 py-2 rounded-full"
+    >
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      Back to Projects
+    </a>
+  </section>
+
+  <!-- Main Content -->
+  <main class="max-w-6xl mx-auto px-6 py-12">
+    <!-- Project Metadata -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12 p-6 bg-gray-50 rounded-2xl">
+      <div>
+        <p class="text-xs uppercase tracking-widest text-gray-400 font-semibold mb-1">Location</p>
+        <p class="text-gray-800 font-medium">{data.location}</p>
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-widest text-gray-400 font-semibold mb-1">Area</p>
+        <p class="text-gray-800 font-medium">{data.constructionArea}</p>
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-widest text-gray-400 font-semibold mb-1">Year</p>
+        <p class="text-gray-800 font-medium">{data.year}</p>
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-widest text-gray-400 font-semibold mb-1">Status</p>
+        <p class="text-gray-800 font-medium">{data.status}</p>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <article class="prose prose-lg max-w-none prose-headings:font-['Barlow_Condensed'] prose-headings:uppercase prose-headings:tracking-wide prose-headings:text-gray-900 prose-p:text-gray-600 prose-p:leading-relaxed prose-strong:text-gray-800">
+      <Content />
+    </article>
+
+    <!-- Gallery -->
+    <ProjectGallery images={data.galleryImages} title={data.title} />
+
+    <!-- Project Navigation -->
+    <nav class="flex items-center justify-between pt-12 border-t border-gray-200 mt-8">
+      {prevProject ? (
+        <a
+          href={`/proiecte/${prevProject.data.slug}`}
+          class="flex items-center gap-3 group text-gray-600 hover:text-amber-600 transition-colors"
+        >
+          <svg class="w-5 h-5 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+          <div class="text-left">
+            <p class="text-xs uppercase tracking-widest text-gray-400">Previous</p>
+            <p class="font-medium font-['Barlow_Condensed'] uppercase">{prevProject.data.title}</p>
+          </div>
+        </a>
+      ) : <div />}
+
+      {nextProject ? (
+        <a
+          href={`/proiecte/${nextProject.data.slug}`}
+          class="flex items-center gap-3 group text-gray-600 hover:text-amber-600 transition-colors text-right"
+        >
+          <div>
+            <p class="text-xs uppercase tracking-widest text-gray-400">Next</p>
+            <p class="font-medium font-['Barlow_Condensed'] uppercase">{nextProject.data.title}</p>
+          </div>
+          <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+      ) : <div />}
+    </nav>
+  </main>
+</Layout>
+
+<script>
+  import { gsap } from 'gsap';
+  gsap.from('main', {
+    y: 30,
+    opacity: 0,
+    duration: 0.8,
+    ease: 'power2.out',
+  });
+</script>
