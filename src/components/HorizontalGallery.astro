@@ -6,14 +6,17 @@ export interface Props {
 }
 
 const { projects } = Astro.props;
-const projectCount = projects.length;
 ---
 
+<!--
+  Horizontal track (flex row) cu per-slide ScrollTriggers via containerAnimation.
+  Fiecare slide, când iese pe stânga, se scalează 1→0.7 și face fade
+  cu același timing 0.9/0.1 ca în exemplul GreenSock.
+-->
 <section id="projects" class="projects-section">
   <div class="projects-container">
-    <!-- Track orizontal — intro slide + un slide per proiect -->
     <div class="projects-track">
-      <!-- Intro Slide — fără background, cu header și animații -->
+      <!-- Intro Slide -->
       <div class="project-slide intro-slide">
         <div class="intro-content">
           <span class="intro-label">Our Work</span>
@@ -60,67 +63,49 @@ const projectCount = projects.length;
     if (!track || !container || slides.length === 0) return;
 
     const getScrollDistance = () => track.scrollWidth - window.innerWidth;
-    const totalSlides = slides.length;
-    const numTransitions = totalSlides - 1;
-    const transitionDur = 1 / numTransitions;
 
-    // 1. Master timeline cu ScrollTrigger
-    const tl = gsap.timeline({
+    // 1. Tween-ul orizontal al track-ului → containerAnimation
+    const scrollTween = gsap.to(track, {
+      xPercent: () => {
+        const d = getScrollDistance();
+        return -(d / track.scrollWidth) * 100;
+      },
+      ease: 'none',
       scrollTrigger: {
         id: 'gallery-horizontal',
         trigger: container,
         pin: true,
         start: 'top top',
         end: () => `+=${getScrollDistance()}`,
-        scrub: 1.5,
+        scrub: true,
         invalidateOnRefresh: true,
       },
-      defaults: { ease: 'none' },
     });
 
-    // 2. Mișcarea orizontală a track-ului
-    tl.to(track, {
-      xPercent: () => {
-        const d = getScrollDistance();
-        return -(d / track.scrollWidth) * 100;
-      },
-      duration: 1,
-      ease: 'none',
-    }, 0);
+    // 2. Per-slide: animație la ieșirea din ecran (ca exemplul)
+    // Fiecare slide începe să anime când „intră" pe stânga și până iese complet
+    slides.slice(0, -1).forEach((slide) => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          containerAnimation: scrollTween,
+          trigger: slide,
+          start: 'left left',   // slide-ul e complet în viewport
+          end: 'right left',    // slide-ul a ieșit complet pe stânga
+          scrub: true,
+        },
+      });
 
-    // 3. Tranziții per slide — efect parallax + scale
-    slides.forEach((slide, i) => {
-      if (i === 0) return;
-
-      const startTime = i * transitionDur;
-
-      // Slide curent iese: scale + parallax (mai încet) + fade
-      tl.to(slide, {
-        scale: 0.7,
-        x: '8vw',
-        opacity: 0,
-        duration: transitionDur * 0.7,
-        ease: 'power2.in',
-      }, startTime);
-
-      // Următorul slide intră (viteză normală, vine din dreapta)
-      if (i < totalSlides - 1) {
-        const nextSlide = slides[i + 1];
-        tl.fromTo(nextSlide, {
-          scale: 0.7,
-          x: '15vw',
-          opacity: 0,
-        }, {
-          scale: 1,
-          x: 0,
-          opacity: 1,
-          duration: transitionDur * 0.7,
-          ease: 'power2.out',
-        }, startTime);
-      }
+      // Structura exactă ca în exemplu:
+      // 0.9 din animație → scale 1→0.7, opacity 1→0.5
+      // 0.1 din animație → opacity 0.5→0
+      tl.fromTo(
+        slide,
+        { scale: 1, opacity: 1 },
+        { scale: 0.7, opacity: 0.5, duration: 0.9, ease: 'power2.inOut' },
+      ).to(slide, { opacity: 0, duration: 0.1, ease: 'power2.in' });
     });
 
-    // 4. Intro slide — animație de intrare
+    // 3. Intro slide — animație de intrare
     if (introContent) {
       const introChildren = introContent.children;
       gsap.from(introChildren, {
@@ -137,7 +122,7 @@ const projectCount = projects.length;
       });
     }
 
-    // 5. Click "View All Projects" → scroll la primul proiect
+    // 4. Click "View All Projects" → scroll la primul proiect
     if (viewAllBtn) {
       viewAllBtn.addEventListener('click', () => {
         const st = ScrollTrigger.getById('gallery-horizontal');
@@ -251,7 +236,6 @@ const projectCount = projects.length;
     object-fit: cover;
   }
 
-  /* Overlay — VIZIBIL PERMANENT, bottom-left */
   .project-slide-overlay {
     position: absolute;
     inset: 0;
