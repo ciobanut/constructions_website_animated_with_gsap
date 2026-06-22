@@ -96,12 +96,12 @@ const { projects } = Astro.props;
       });
 
       // Structura exactă ca în exemplu:
-      // 0.9 din animație → scale 1→0.7, opacity 1→0.5
+      // 0.9 din animație → scale 1→0.7, x 0→15vw (opus direcției), opacity 1→0.5
       // 0.1 din animație → opacity 0.5→0
       tl.fromTo(
         slide,
-        { scale: 1, opacity: 1 },
-        { scale: 0.7, opacity: 0.5, duration: 0.9, ease: 'power2.inOut' },
+        { scale: 1, x: 0, opacity: 1 },
+        { scale: 0.7, x: '100vw', opacity: 0.5, duration: 0.9, ease: 'power2.in' },
       ).to(slide, { opacity: 0, duration: 0.1, ease: 'power2.in' });
     });
 
