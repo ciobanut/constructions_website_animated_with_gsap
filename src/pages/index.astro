@@ -1,14 +1,14 @@
 ---
-import { getCollection } from 'astro:content';
-import Layout from '../layouts/Layout.astro';
-import NavBar from '../components/NavBar.astro';
-import AnimatedTitle from '../components/AnimatedTitle.astro';
-import StatsSection from '../components/StatsSection.astro';
-import HorizontalGallery from '../components/HorizontalGallery.astro';
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import NavBar from "../components/NavBar.astro";
+import AnimatedTitle from "../components/AnimatedTitle.astro";
+import StatsSection from "../components/StatsSection.astro";
+import HorizontalGallery from "../components/HorizontalGallery.astro";
 
-const title = 'Iraqi Construction';
-const subtitle = 'Building the future with quality and trust';
-const projects = await getCollection('projects');
+const title = "Iraqi Construction";
+const subtitle = "Building the future with quality and trust";
+const projects = await getCollection("projects");
 ---
 
 <Layout>
@@ -22,8 +22,7 @@ const projects = await getCollection('projects');
       <iframe
         src="https://www.youtube.com/embed/Dj2jErpwQQk?autoplay=1&loop=1&mute=1&controls=0&playsinline=1&modestbranding=1&rel=0&playlist=Dj2jErpwQQk&enablejsapi=1"
         allow="autoplay; encrypted-media"
-        allowfullscreen
-      ></iframe>
+        allowfullscreen></iframe>
     </div>
 
     <!-- Fallback image — shown while video loads, then faded out via GSAP -->
@@ -44,67 +43,73 @@ const projects = await getCollection('projects');
     </div>
   </section>
 
+  <HorizontalGallery projects={projects} />
+  
   <StatsSection />
 
-  <HorizontalGallery projects={projects} />
 </Layout>
 
 <script>
-  import { gsap } from 'gsap';
+  import { gsap } from "gsap";
 
-  // --- Hero image → video transition (Zoom-out) ---
-  const fallback = document.getElementById('hero-fallback');
+  // --- Hero image → video transition (slow zoom-out, accelerates on video ready) ---
+  const fallback = document.getElementById("hero-fallback");
 
   if (fallback) {
     let transitionStarted = false;
 
-    function startTransition() {
+    // Slow zoom-out starts immediately on page load (image starts at scale 1.1)
+    gsap.fromTo(
+      fallback,
+      { scale: 1.1 },
+      { scale: 1.0, duration: 6, ease: "none" },
+    );
+
+    function accelerateTransition() {
       if (transitionStarted) return;
       transitionStarted = true;
 
-      gsap.fromTo(
-        fallback,
-        { scale: 1.1, opacity: 1 },
-        {
-          scale: 1.0,
-          opacity: 0,
-          duration: 1.5,
-          ease: 'power3.out',
-          onComplete: () => fallback.remove(),
-        },
-      );
+      // Interrupt the slow tween: fast zoom-out completion + fade to 0
+      gsap.to(fallback, {
+        scale: 1.0,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power2.inOut",
+        overwrite: "auto",
+        onComplete: () => fallback?.remove(),
+      });
     }
 
-    // Safety timeout: start after 3s even if video hasn't signalled
-    setTimeout(startTransition, 3000);
+    // Safety: force fade after 6s (matches slow-tween duration)
+    setTimeout(accelerateTransition, 6000);
 
-    // YouTube Player API: listen for "playing" state
-    window.addEventListener('message', (event) => {
+    // YouTube Player API: accelerate when video starts playing
+    window.addEventListener("message", (event) => {
       if (
-        event.origin === 'https://www.youtube.com' &&
+        event.origin === "https://www.youtube.com" &&
         event.data &&
-        event.data.event === 'onStateChange' &&
+        event.data.event === "onStateChange" &&
         event.data.info === 1 // YT.PlayerState.PLAYING
       ) {
-        startTransition();
+        accelerateTransition();
       }
     });
   }
 
   // --- Title animations (unchanged) ---
-  gsap.from('.animated-title .char', {
+  gsap.from(".animated-title .char", {
     y: 60,
     opacity: 0,
     duration: 0.8,
     stagger: 0.04,
-    ease: 'power3.out',
+    ease: "power3.out",
   });
-  gsap.from('.subtitle', {
+  gsap.from(".subtitle", {
     y: 30,
     opacity: 0,
     duration: 1,
     delay: 0.4,
-    ease: 'power3.out',
+    ease: "power3.out",
   });
 </script>
 
@@ -151,6 +156,7 @@ const projects = await getCollection('projects');
     object-fit: cover;
     z-index: 0;
     will-change: transform, opacity;
+    transform: scale(1.1);
   }
 
   .overlay {
@@ -175,11 +181,10 @@ const projects = await getCollection('projects');
   .subtitle {
     font-size: clamp(1rem, 2.5vw, 1.5rem);
     font-weight: 300;
-    font-family: 'Barlow', sans-serif;
+    font-family: "Barlow", sans-serif;
     margin: 16px 0 0;
     opacity: 0.9;
     letter-spacing: 0.06em;
     text-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
   }
-
 </style>
