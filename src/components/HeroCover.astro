@@ -1,0 +1,83 @@
+---
+export interface Props {
+  coverImage: string;
+  title: string;
+  category?: string | null;
+  location?: string | null;
+  constructionArea?: string | null;
+  year?: string | number | null;
+  status?: string | null;
+  backHref?: string;
+  backLabel?: string;
+}
+
+const {
+  coverImage,
+  title,
+  category,
+  location,
+  constructionArea,
+  year,
+  status,
+  backHref,
+  backLabel = "Back to Projects",
+} = Astro.props;
+---
+
+<section class="hero-cover relative h-full w-full overflow-hidden">
+  <img
+    src={coverImage}
+    alt={title}
+    class="absolute inset-0 w-full h-full object-cover"
+  />
+  <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+  <div class="absolute inset-0 flex flex-col justify-end items-start p-8 md:p-16">
+    {category && (
+      <span class="inline-block text-gray-300 text-xs font-semibold uppercase tracking-widest mb-3 bg-black/40 backdrop-blur-sm px-3 py-1 rounded-full">
+        {category}
+      </span>
+    )}
+    <h1 class="text-4xl md:text-5xl lg:text-6xl font-['Barlow_Condensed'] font-bold text-white uppercase tracking-wide mb-6">
+      {title}
+    </h1>
+    <!-- Metadata card -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-x-10 gap-y-3 p-5 bg-black/40 backdrop-blur-sm rounded-xl">
+      {location && (
+        <div>
+          <p class="text-[10px] uppercase tracking-widest text-gray-400 font-semibold mb-0.5">Location</p>
+          <p class="text-gray-100 font-medium text-sm">{location}</p>
+        </div>
+      )}
+      {constructionArea && (
+        <div>
+          <p class="text-[10px] uppercase tracking-widest text-gray-400 font-semibold mb-0.5">Area</p>
+          <p class="text-gray-100 font-medium text-sm">{constructionArea}</p>
+        </div>
+      )}
+      {year && (
+        <div>
+          <p class="text-[10px] uppercase tracking-widest text-gray-400 font-semibold mb-0.5">Year</p>
+          <p class="text-gray-100 font-medium text-sm">{year}</p>
+        </div>
+      )}
+      {status && (
+        <div>
+          <p class="text-[10px] uppercase tracking-widest text-gray-400 font-semibold mb-0.5">Status</p>
+          <p class="text-gray-100 font-medium text-sm">{status}</p>
+        </div>
+      )}
+    </div>
+  </div>
+
+  {backHref && (
+    <a
+      href={backHref}
+      class="absolute top-6 left-6 text-white/80 hover:text-white flex items-center gap-2 text-sm font-medium transition-colors bg-black/20 backdrop-blur-sm px-4 py-2 rounded-full"
+    >
+      <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M15 6l-6 6l6 6" />
+      </svg>
+      {backLabel}
+    </a>
+  )}
+</section>

@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import HeroCover from './HeroCover.astro';
 
 export interface Props {
   projects: CollectionEntry<'projects'>[];
@@ -28,20 +29,18 @@ const { projects } = Astro.props;
         </div>
       </div>
 
-      <!-- Proiecte -->
+      <!-- Proiecte — full HeroCover style -->
       {projects.map((project) => (
         <a href={`/proiecte/${project.data.slug}`} class="project-slide">
-          <img
-            src={project.data.coverImage}
-            alt={project.data.title}
-            loading="lazy"
+          <HeroCover
+            coverImage={project.data.coverImage}
+            title={project.data.title}
+            category={project.data.category}
+            location={project.data.location}
+            constructionArea={project.data.constructionArea}
+            year={project.data.year}
+            status={project.data.status}
           />
-          <div class="project-slide-overlay">
-            <h3 class="slide-title">{project.data.title}</h3>
-            <p class="slide-meta">
-              {project.data.location} &middot; {project.data.constructionArea}
-            </p>
-          </div>
         </a>
       ))}
     </div>
@@ -236,45 +235,7 @@ const { projects } = Astro.props;
     object-fit: cover;
   }
 
-  .project-slide-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      to top,
-      rgba(0, 0, 0, 0.75) 0%,
-      rgba(0, 0, 0, 0.15) 40%,
-      transparent 60%
-    );
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: flex-start;
-    padding: 4rem;
-    color: white;
-  }
-
-  .slide-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: clamp(1.5rem, 3vw, 2.5rem);
-    font-weight: 700;
-    text-transform: uppercase;
-    color: #f3f4f6;
-    margin: 0;
-  }
-
-  .slide-meta {
-    font-size: 0.95rem;
-    color: #d1d5db;
-    margin: 0.5rem 0 0;
-  }
-
   @media (max-width: 768px) {
-    .project-slide-overlay {
-      padding: 2rem;
-    }
-    .slide-title {
-      font-size: 1.5rem;
-    }
     .view-all-btn {
       padding: 0.75rem 2rem;
       font-size: 1rem;
