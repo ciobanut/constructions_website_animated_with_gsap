@@ -44,9 +44,8 @@ const projects = await getCollection("projects");
   </section>
 
   <HorizontalGallery projects={projects} />
-  
-  <StatsSection />
 
+  <StatsSection />
 </Layout>
 
 <script>
@@ -54,6 +53,7 @@ const projects = await getCollection("projects");
 
   // --- Hero image → video transition (slow zoom-out, accelerates on video ready) ---
   const fallback = document.getElementById("hero-fallback");
+  const iframe = document.querySelector(".video-wrapper iframe");
 
   if (fallback) {
     let transitionStarted = false;
@@ -62,7 +62,22 @@ const projects = await getCollection("projects");
     gsap.fromTo(
       fallback,
       { scale: 1.1 },
-      { scale: 1.0, duration: 6, ease: "none" },
+      {
+        scale: 1.0,
+        duration: 6,
+        ease: "none",
+        onComplete: () => {
+          // Restart video from 0:00 so it feels like it starts fresh
+          (iframe as HTMLIFrameElement)?.contentWindow?.postMessage(
+            JSON.stringify({
+              event: "command",
+              func: "seekTo",
+              args: [0, true],
+            }),
+            "https://www.youtube.com",
+          );
+        },
+      },
     );
 
     function accelerateTransition() {
@@ -73,10 +88,12 @@ const projects = await getCollection("projects");
       gsap.to(fallback, {
         scale: 1.0,
         opacity: 0,
-        duration: 0.8,
+        duration: 1,
         ease: "power2.inOut",
         overwrite: "auto",
-        onComplete: () => fallback?.remove(),
+        onComplete: () => {
+          fallback?.remove();
+        },
       });
     }
 
