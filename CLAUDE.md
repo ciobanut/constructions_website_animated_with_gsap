@@ -35,7 +35,12 @@ src/
 dist/                — Build output (gitignored)
 ```
 
-### Key Conventions
+### Language
+
+- **Chat responses**: Answer in the same language the user wrote in (English, Romanian, etc.)
+- **Code comments**: Write all comments, documentation, and JSDoc in English only — regardless of the chat language
+
+## Key Conventions
 
 - **File-based routing**: `src/pages/` mirrors URL paths. Adding `about.astro` creates `/about`.
 - **Layouts wrap pages**: `Layout.astro` provides the HTML shell (`<html>`, `<head>`, `<body>`, `<slot />`).

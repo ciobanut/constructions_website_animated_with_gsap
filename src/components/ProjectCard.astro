@@ -8,11 +8,12 @@ export interface Props {
   category: string;
 }
 
-const { title, slug, coverImage, location, constructionArea, category } = Astro.props;
+const { title, slug, coverImage, location, constructionArea, category } =
+  Astro.props;
 ---
 
 <a
-  href={`/proiecte/${slug}`}
+  href={`/projects/${slug}`}
   class="project-card group block relative overflow-hidden rounded-2xl bg-[#1a1a1a] shadow-lg shadow-black/20 hover:shadow-2xl hover:shadow-black/30 transition-all duration-500 cursor-pointer"
 >
   <!-- Image -->
@@ -24,34 +25,58 @@ const { title, slug, coverImage, location, constructionArea, category } = Astro.
       loading="lazy"
     />
     <!-- Category badge -->
-    <span class="absolute top-4 left-4 bg-black/60 backdrop-blur-sm text-gray-100 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">
+    <span
+      class="absolute top-4 left-4 bg-black/60 backdrop-blur-sm text-gray-100 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider"
+    >
       {category}
     </span>
   </div>
 
   <!-- Info -->
   <div class="p-5">
-    <h3 class="text-xl font-bold font-['Barlow_Condensed'] uppercase tracking-wide text-gray-400 group-hover:text-white transition-colors duration-300">
+    <h3
+      class="text-xl font-bold font-['Barlow_Condensed'] uppercase tracking-wide text-gray-400 group-hover:text-white transition-colors duration-300"
+    >
       {title}
     </h3>
     <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-400">
       <span class="inline-flex items-center gap-1">
-        <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
-          <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0" />
+        <svg
+          class="w-3.5 h-3.5"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"></path>
+          <path
+            d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0"
+          ></path>
         </svg>
         {location}
       </span>
       <span class="inline-flex items-center gap-1">
-        <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M16 4l4 0l0 4" />
-          <path d="M14 10l6 -6" />
-          <path d="M8 20l-4 0l0 -4" />
-          <path d="M4 20l6 -6" />
-          <path d="M16 20l4 0l0 -4" />
-          <path d="M14 14l6 6" />
-          <path d="M8 4l-4 0l0 4" />
-          <path d="M4 4l6 6" />
+        <svg
+          class="w-3.5 h-3.5"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M16 4l4 0l0 4"></path>
+          <path d="M14 10l6 -6"></path>
+          <path d="M8 20l-4 0l0 -4"></path>
+          <path d="M4 20l6 -6"></path>
+          <path d="M16 20l4 0l0 -4"></path>
+          <path d="M14 14l6 6"></path>
+          <path d="M8 4l-4 0l0 4"></path>
+          <path d="M4 4l6 6"></path>
         </svg>
         {constructionArea}
       </span>
@@ -60,22 +85,22 @@ const { title, slug, coverImage, location, constructionArea, category } = Astro.
 </a>
 
 <script>
-  import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
   gsap.registerPlugin(ScrollTrigger);
 
-  const cards = document.querySelectorAll<HTMLElement>('.project-card');
+  const cards = document.querySelectorAll<HTMLElement>(".project-card");
   cards.forEach((card, i) => {
     gsap.from(card, {
       y: 60,
       opacity: 0,
       duration: 0.8,
       delay: 0.1 + i * 0.08,
-      ease: 'power3.out',
+      ease: "power3.out",
       scrollTrigger: {
         trigger: card,
-        start: 'top 85%',
-        toggleActions: 'play none none none',
+        start: "top 85%",
+        toggleActions: "play none none none",
       },
     });
   });

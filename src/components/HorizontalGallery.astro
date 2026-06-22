@@ -1,18 +1,18 @@
 ---
-import type { CollectionEntry } from 'astro:content';
-import HeroCover from './HeroCover.astro';
+import type { CollectionEntry } from "astro:content";
+import HeroCover from "./HeroCover.astro";
 
 export interface Props {
-  projects: CollectionEntry<'projects'>[];
+  projects: CollectionEntry<"projects">[];
 }
 
 const { projects } = Astro.props;
 ---
 
 <!--
-  Horizontal track (flex row) cu per-slide ScrollTriggers via containerAnimation.
-  Fiecare slide, când iese pe stânga, se scalează 1→0.7 și face fade
-  cu același timing 0.9/0.1 ca în exemplul GreenSock.
+  Horizontal track (flex row) with per-slide ScrollTriggers via containerAnimation.
+  Each slide, as it exits to the left, scales from 1→0.7 and fades out
+  with the same 0.9/0.1 timing split as the GreenSock example.
 -->
 <section id="projects" class="projects-section">
   <div class="projects-container">
@@ -23,88 +23,102 @@ const { projects } = Astro.props;
           <span class="intro-label">Our Work</span>
           <h2 class="intro-title">Featured Projects</h2>
           <p class="intro-desc">
-            Delivering quality construction and design solutions across Iraq and beyond
+            Delivering quality construction and design solutions across Iraq and
+            beyond
           </p>
           <button class="view-all-btn" data-view-all>View All Projects</button>
         </div>
       </div>
 
-      <!-- Proiecte — full HeroCover style -->
-      {projects.map((project) => (
-        <a href={`/proiecte/${project.data.slug}`} class="project-slide">
-          <HeroCover
-            coverImage={project.data.coverImage}
-            title={project.data.title}
-            category={project.data.category}
-            location={project.data.location}
-            constructionArea={project.data.constructionArea}
-            year={project.data.year}
-            status={project.data.status}
-          />
-        </a>
-      ))}
+      <!-- Projects — full HeroCover style -->
+      {
+        projects.map((project) => (
+          <a href={`/projects/${project.data.slug}`} class="project-slide">
+            <HeroCover
+              coverImage={project.data.coverImage}
+              title={project.data.title}
+              category={project.data.category}
+              location={project.data.location}
+              constructionArea={project.data.constructionArea}
+              year={project.data.year}
+              status={project.data.status}
+            />
+          </a>
+        ))
+      }
     </div>
   </div>
 </section>
 
 <script>
-  import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
   gsap.registerPlugin(ScrollTrigger);
 
   (function initGallery() {
-    const container = document.querySelector<HTMLElement>('.projects-container');
-    const track = document.querySelector<HTMLElement>('.projects-track');
-    const slides = gsap.utils.toArray<HTMLElement>('.project-slide');
-    const introContent = document.querySelector<HTMLElement>('.intro-content');
-    const viewAllBtn = document.querySelector<HTMLButtonElement>('[data-view-all]');
+    const container = document.querySelector<HTMLElement>(
+      ".projects-container",
+    );
+    const track = document.querySelector<HTMLElement>(".projects-track");
+    const slides = gsap.utils.toArray<HTMLElement>(".project-slide");
+    const introContent = document.querySelector<HTMLElement>(".intro-content");
+    const viewAllBtn =
+      document.querySelector<HTMLButtonElement>("[data-view-all]");
 
     if (!track || !container || slides.length === 0) return;
 
     const getScrollDistance = () => track.scrollWidth - window.innerWidth;
 
-    // 1. Tween-ul orizontal al track-ului → containerAnimation
+    // 1. Horizontal track tween → drives containerAnimation
     const scrollTween = gsap.to(track, {
       xPercent: () => {
         const d = getScrollDistance();
         return -(d / track.scrollWidth) * 100;
       },
-      ease: 'none',
+      ease: "none",
       scrollTrigger: {
-        id: 'gallery-horizontal',
+        id: "gallery-horizontal",
         trigger: container,
         pin: true,
-        start: 'top top',
+        start: "top top",
         end: () => `+=${getScrollDistance()}`,
         scrub: true,
         invalidateOnRefresh: true,
       },
     });
 
-    // 2. Per-slide: animație la ieșirea din ecran (ca exemplul)
-    // Fiecare slide începe să anime când „intră" pe stânga și până iese complet
+    // 2. Per-slide exit animation (mirrors the GreenSock example)
+    // Each slide animates from fully visible to scaled+faded as it scrolls out left
     slides.slice(0, -1).forEach((slide) => {
       const tl = gsap.timeline({
         scrollTrigger: {
           containerAnimation: scrollTween,
           trigger: slide,
-          start: 'left left',   // slide-ul e complet în viewport
-          end: 'right left',    // slide-ul a ieșit complet pe stânga
+          start: "left left", // slide is fully in viewport
+          end: "right left", // slide has fully exited to the left
           scrub: true,
         },
       });
 
-      // Structura exactă ca în exemplu:
-      // 0.9 din animație → scale 1→0.7, x 0→15vw (opus direcției), opacity 1→0.5
-      // 0.1 din animație → opacity 0.5→0
+      // Exact structure from the example:
+      // 0.9 of the animation → scale 1→0.7, x 0→100vw (opposite direction), opacity 1→0.5
+      // 0.1 of the animation → opacity 0.5→0
       tl.fromTo(
         slide,
         { scale: 1, x: 0, opacity: 1 },
-        { scale: 0.7, x: '100vw', opacity: 0.5, duration: 0.9, ease: 'power2.in', borderRadius: '30px', filter: 'blur(1px)' },
-      ).to(slide, { opacity: 0, duration: 0.1, ease: 'power2.in' });
+        {
+          scale: 0.7,
+          x: "100vw",
+          opacity: 0.5,
+          duration: 0.9,
+          ease: "power2.in",
+          borderRadius: "30px",
+          filter: "blur(1px)",
+        },
+      ).to(slide, { opacity: 0, duration: 0.1, ease: "power2.in" });
     });
 
-    // 3. Intro slide — animație de intrare
+    // 3. Intro slide entrance animation
     if (introContent) {
       const introChildren = introContent.children;
       gsap.from(introChildren, {
@@ -112,25 +126,103 @@ const { projects } = Astro.props;
         opacity: 0,
         duration: 1,
         stagger: 0.15,
-        ease: 'power3.out',
+        ease: "power3.out",
         scrollTrigger: {
           trigger: container,
-          start: 'top 90%',
-          toggleActions: 'play none none none',
+          start: "top 90%",
+          toggleActions: "play none none none",
         },
       });
     }
 
-    // 4. Click "View All Projects" → scroll la primul proiect
+    // 4. Click "View All Projects" → scroll to first project slide
     if (viewAllBtn) {
-      viewAllBtn.addEventListener('click', () => {
-        const st = ScrollTrigger.getById('gallery-horizontal');
+      viewAllBtn.addEventListener("click", () => {
+        const st = ScrollTrigger.getById("gallery-horizontal");
         if (st) {
           const targetY = st.start + window.innerWidth;
-          window.scrollTo({ top: targetY, behavior: 'smooth' });
+          window.scrollTo({ top: targetY, behavior: "smooth" });
         }
       });
     }
+
+    // 5. Click project slide → center it in viewport quickly, then navigate
+    //    Prevents the jarring visual jump when an off-center slide is clicked
+    let isAnimating = false;
+
+    container.addEventListener("click", (e) => {
+      if (isAnimating) return;
+
+      const anchor = (e.target as HTMLElement).closest<HTMLAnchorElement>(
+        "a.project-slide",
+      );
+      if (!anchor) return;
+
+      const href = anchor.getAttribute("href");
+      if (!href) return;
+
+      e.preventDefault();
+
+      // prefers-reduced-motion → navigate immediately
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        window.location.href = href;
+        return;
+      }
+
+      const st = ScrollTrigger.getById("gallery-horizontal");
+      if (!st) {
+        window.location.href = href;
+        return;
+      }
+
+      const slideIndex = slides.indexOf(anchor);
+      if (slideIndex < 0) {
+        window.location.href = href;
+        return;
+      }
+
+      // Slide already centered → navigate directly
+      const targetY = st.start + slideIndex * window.innerWidth;
+      if (Math.abs(window.scrollY - targetY) < 1) {
+        window.location.href = href;
+        return;
+      }
+
+      isAnimating = true;
+
+      const navigate = () => {
+        window.location.href = href;
+      };
+
+      // Use native scrollTo (same mechanism as "View All" button) to
+      // avoid conflicts with ScrollTrigger pin/scrub.
+      window.scrollTo({ top: targetY, behavior: "smooth" });
+
+      // Detect scroll completion: scrollend event + polling + timeout
+      let cleanedUp = false;
+      const done = () => {
+        if (cleanedUp) return;
+        cleanedUp = true;
+        window.removeEventListener("scrollend", done);
+        cancelAnimationFrame(pollId);
+        isAnimating = false;
+        navigate();
+      };
+
+      window.addEventListener("scrollend", done);
+
+      // RAF polling: once we reach the target → navigate
+      const pollId = requestAnimationFrame(function check() {
+        if (Math.abs(window.scrollY - targetY) < 2) {
+          done();
+          return;
+        }
+        requestAnimationFrame(check);
+      });
+
+      // Safety timeout: 1s (smooth scroll usually takes 300-500ms)
+      setTimeout(done, 1000);
+    });
   })();
 </script>
 
@@ -176,7 +268,7 @@ const { projects } = Astro.props;
   }
 
   .intro-title {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: "Barlow Condensed", sans-serif;
     font-size: clamp(2.5rem, 6vw, 5rem);
     font-weight: 700;
     text-transform: uppercase;
@@ -197,7 +289,7 @@ const { projects } = Astro.props;
     display: inline-block;
     margin-top: 2rem;
     padding: 1.25rem 4.5rem;
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: "Barlow Condensed", sans-serif;
     font-size: 1.1rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -205,7 +297,9 @@ const { projects } = Astro.props;
     color: #f3f4f6;
     border: 1px solid #f3f4f6;
     cursor: pointer;
-    transition: transform 0.3s ease, background 0.3s ease;
+    transition:
+      transform 0.3s ease,
+      background 0.3s ease;
   }
 
   .view-all-btn:hover {
