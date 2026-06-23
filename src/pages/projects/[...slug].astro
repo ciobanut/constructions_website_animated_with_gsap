@@ -41,7 +41,7 @@ const metaDescription = data.location
       constructionArea={data.constructionArea}
       year={data.year}
       status={data.status}
-      backHref="/#proiecte"
+      backHref="/#projects"
       backLabel="Back to Projects"
     />
 
@@ -87,7 +87,7 @@ const metaDescription = data.location
           {
             prevProject ? (
               <a
-                href={`/proiecte/${prevProject.data.slug}`}
+                href={`/projects/${prevProject.data.slug}`}
                 class="flex items-center gap-3 group text-gray-500 hover:text-white transition-colors duration-300"
               >
                 <svg
@@ -119,7 +119,7 @@ const metaDescription = data.location
           {
             nextProject ? (
               <a
-                href={`/proiecte/${nextProject.data.slug}`}
+                href={`/projects/${nextProject.data.slug}`}
                 class="flex items-center gap-3 group text-gray-500 hover:text-white transition-colors duration-300 text-right"
               >
                 <div>

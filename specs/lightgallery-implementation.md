@@ -102,7 +102,7 @@ if (galleryElement) {
     plugins: [lgZoom, lgAutoplay, lgFullscreen, lgHash, lgThumbnail, lgMediumZoom],
     
     // License: lightGallery este gratuit pentru uz non-comercial / open-source.
-    // Pentru proiecte comerciale, înlocuiește cu o cheie validă.
+    // Pentru projects comerciale, înlocuiește cu o cheie validă.
     licenseKey: '0000-0000-000-0000',
     
     speed: 500,

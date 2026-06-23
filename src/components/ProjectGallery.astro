@@ -18,7 +18,8 @@ const { images, title } = Astro.props;
           images.map((img, i) => (
             <a
               href={img}
-              data-lg-size="1920-1080"
+              data-fancybox="project-gallery"
+              data-caption={`${title} - Image ${i + 1}`}
               class="gallery-item group relative aspect-[4/3] overflow-hidden rounded-xl bg-[#1a1a1a] block"
             >
               <img
@@ -40,20 +41,8 @@ const { images, title } = Astro.props;
   import { gsap } from 'gsap';
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-  import lightGallery from 'lightgallery';
-  import 'lightgallery/css/lightgallery.css';
-  import 'lightgallery/css/lg-zoom.css';
-  import 'lightgallery/css/lg-fullscreen.css';
-  import 'lightgallery/css/lg-thumbnail.css';
-  import 'lightgallery/css/lg-autoplay.css';
-  import 'lightgallery/css/lg-medium-zoom.css';
-
-  import lgZoom from 'lightgallery/plugins/zoom';
-  import lgAutoplay from 'lightgallery/plugins/autoplay';
-  import lgFullscreen from 'lightgallery/plugins/fullscreen';
-  import lgHash from 'lightgallery/plugins/hash';
-  import lgThumbnail from 'lightgallery/plugins/thumbnail';
-  import lgMediumZoom from 'lightgallery/plugins/mediumzoom';
+  import { Fancybox } from '@fancyapps/ui/dist/fancybox/';
+  import '@fancyapps/ui/dist/fancybox/fancybox.css';
 
   gsap.registerPlugin(ScrollTrigger);
 
@@ -74,53 +63,40 @@ const { images, title } = Astro.props;
     });
   });
 
-  // --- lightGallery ---
-  const galleryElement = document.getElementById('project-gallery');
-
-  if (galleryElement) {
-    const lg = lightGallery(galleryElement, {
-      plugins: [lgZoom, lgAutoplay, lgFullscreen, lgHash, lgThumbnail],
-
-      // License key (free for open-source / non-commercial use)
-      licenseKey: '0000-0000-000-0000',
-
-      speed: 500,
-      loop: true,
-      download: false,
-      counter: true,
-      controls: true,
-      mousewheel: true,
-      preload: 2,
-      enableDrag: true,
-      enableSwipe: true,
-      swipeThreshold: 50,
+  // --- Fancybox ---
+  Fancybox.bind('[data-fancybox="project-gallery"]', {
+    Carousel: {
+      // Infinite loop (was `loop: true` in lightGallery)
+      infinite: true,
 
       // Thumbnail strip
-      thumbnail: true,
-      animateThumb: true,
+      Thumbs: {
+        type: 'classic',
+      },
 
-      // Zoom
-      zoom: true,
-      actualSize: true,
+      // Custom toolbar layout: counter | zoom controls | autoplay, thumbs, fullscreen, close
+      Toolbar: {
+        display: {
+          left: ['counter'],
+          middle: ['zoomIn', 'zoomOut', 'toggle1to1'],
+          right: ['autoplay', 'thumbs', 'toggleFull', 'close'],
+        },
+      },
 
-      // Autoplay / slideshow
-      autoplay: true,
-      autoplayControls: true,
-      progressBar: true,
+      // Caption format: "2 of 5 — Image title"
+      formatCaption: (carousel, slide) => {
+        const total = carousel.getSlides().length;
+        return `${slide.index + 1} of ${total}<br />${slide.caption || ''}`;
+      },
+    },
 
-      // Fullscreen
-      fullScreen: true,
+    // Drag up/down to close
+    dragToClose: true,
 
-      // Medium zoom (pinch-to-zoom on mobile)
-      mediumZoom: true,
+    // Zoom animation from thumbnail to full image
+    zoomEffect: true,
 
-      // Hash in URL
-      hash: true,
-    });
-
-    // Cleanup on page leave — prevents memory leaks
-    window.addEventListener('beforeunload', () => {
-      if (lg) lg.destroy();
-    });
-  }
+    // Scroll wheel navigates slides
+    wheel: 'slide',
+  });
 </script>
