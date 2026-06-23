@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import NavBar from "../components/NavBar.astro";
+import Footer from "../components/Footer.astro";
 import AnimatedTitle from "../components/AnimatedTitle.astro";
 import StatsSection from "../components/StatsSection.astro";
 import HorizontalGallery from "../components/HorizontalGallery.astro";
@@ -15,37 +16,41 @@ const projects = await getCollection("projects");
   <!-- NavBar floating above hero -->
   <NavBar />
 
-  <!-- Hero Section -->
-  <section id="home" class="hero">
-    <!-- YouTube video background -->
-    <div class="video-wrapper">
-      <iframe
-        src="https://www.youtube.com/embed/Dj2jErpwQQk?autoplay=1&loop=1&mute=1&controls=0&playsinline=1&modestbranding=1&rel=0&playlist=Dj2jErpwQQk&enablejsapi=1"
-        allow="autoplay; encrypted-media"
-        allowfullscreen></iframe>
-    </div>
+  <main class="main-content z-10 relative">
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+      <!-- YouTube video background -->
+      <div class="video-wrapper">
+        <iframe
+          src="https://www.youtube.com/embed/Dj2jErpwQQk?autoplay=1&loop=1&mute=1&controls=0&playsinline=1&modestbranding=1&rel=0&playlist=Dj2jErpwQQk&enablejsapi=1"
+          allow="autoplay; encrypted-media"
+          allowfullscreen></iframe>
+      </div>
 
-    <!-- Fallback image — shown while video loads, then faded out via GSAP -->
-    <img
-      id="hero-fallback"
-      src="/images/hero-bg.avif"
-      alt=""
-      class="hero-fallback"
-    />
+      <!-- Fallback image — shown while video loads, then faded out via GSAP -->
+      <img
+        id="hero-fallback"
+        src="/images/hero-bg.avif"
+        alt=""
+        class="hero-fallback"
+      />
 
-    <!-- Dark overlay for readability -->
-    <div class="overlay"></div>
+      <!-- Dark overlay for readability -->
+      <div class="overlay"></div>
 
-    <!-- Hero content -->
-    <div class="content">
-      <AnimatedTitle text={title} />
-      <p class="subtitle">{subtitle}</p>
-    </div>
-  </section>
+      <!-- Hero content -->
+      <div class="content">
+        <AnimatedTitle text={title} />
+        <p class="subtitle">{subtitle}</p>
+      </div>
+    </section>
 
-  <HorizontalGallery projects={projects} />
+    <HorizontalGallery projects={projects} />
 
-  <StatsSection />
+    <StatsSection />
+  </main>
+
+  <Footer />
 </Layout>
 
 <script>

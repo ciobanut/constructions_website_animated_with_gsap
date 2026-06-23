@@ -1,0 +1,336 @@
+---
+// src/components/Footer.astro
+---
+
+<footer class="footer" id="footer">
+  <div class="footer-inner">
+    <!-- Grid coloane -->
+    <div class="footer-grid">
+      <!-- Coloana 1: Brand -->
+      <div class="footer-col">
+        <a href="/" class="footer-logo">
+          <img src="/logo.svg" alt="ConstIQ" class="footer-logo-img" width="48" height="54" />
+          <span class="footer-logo-text">Iraqi Construction</span>
+        </a>
+        <p class="footer-tagline">Civil Engineering Company</p>
+      </div>
+
+      <!-- Coloana 2: Projects -->
+      <div class="footer-col">
+        <h4 class="footer-heading">Projects</h4>
+        <ul class="footer-links">
+          <li><a href="/projects">Residential Buildings</a></li>
+          <li><a href="/projects">Commercial Complexes</a></li>
+          <li><a href="/projects">Infrastructure</a></li>
+          <li><a href="/projects">Renovations</a></li>
+        </ul>
+      </div>
+
+      <!-- Coloana 3: Contact -->
+      <div class="footer-col">
+        <h4 class="footer-heading">Contact</h4>
+        <ul class="footer-links">
+          <li><a href="mailto:info@constructions.example.com">info@constructions.example.com</a></li>
+          <li><a href="tel:+964XXXXXXXXX">+964 XXX XXX XXX</a></li>
+          <li>Baghdad, Iraq</li>
+        </ul>
+      </div>
+
+      <!-- Coloana 4: Social -->
+      <div class="footer-col">
+        <h4 class="footer-heading">Follow Us</h4>
+        <ul class="footer-links footer-social">
+          <li>
+            <a href="#" target="_blank" rel="noopener noreferrer">
+              <svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+              Instagram
+            </a>
+          </li>
+          <li>
+            <a href="#" target="_blank" rel="noopener noreferrer">
+              <svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+              Facebook
+            </a>
+          </li>
+          <li>
+            <a href="#" target="_blank" rel="noopener noreferrer">
+              <svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+              LinkedIn
+            </a>
+          </li>
+          <li>
+            <a href="#" target="_blank" rel="noopener noreferrer">
+              <svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29.86 29.86 0 0 0 1 12a29.86 29.86 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2A29.86 29.86 0 0 0 23 12a29.86 29.86 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Partner Logos -->
+    <div class="footer-partners">
+      <h4 class="partners-heading">Our Partners</h4>
+      <div class="partners-logos">
+        <a href="#" target="_blank"><img src="/logos/partner-1.svg" alt="Partner 1" height="36" /></a>
+        <a href="#" target="_blank"><img src="/logos/partner-2.svg" alt="Partner 2" height="36" /></a>
+        <a href="#" target="_blank"><img src="/logos/partner-3.svg" alt="Partner 3" height="36" /></a>
+        <a href="#" target="_blank"><img src="/logos/partner-4.svg" alt="Partner 4" height="36" /></a>
+        <a href="#" target="_blank"><img src="/logos/partner-5.svg" alt="Partner 5" height="36" /></a>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="footer-bottom">
+      <p>© 2026 ConstIQ. All rights reserved.</p>
+      <nav class="footer-legal">
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
+        <a href="#">Cookie Settings</a>
+      </nav>
+      <p class="footer-credit">
+        Website constructed by <a href="https://ciobanut.com" target="_blank" rel="noopener noreferrer">CiobanuT</a>
+      </p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const footer = document.getElementById("footer");
+
+  if (footer) {
+    // Start: footer-ul este mutat în sus (ascuns în spatele conținutului de deasupra care are z-index mai mare)
+    gsap.set(footer, { y: -150, willChange: "transform" });
+
+    // Când user-ul face scroll și footer-ul intră în zonă, glisează în jos ca o foaie care iese de sub conținut
+    ScrollTrigger.create({
+      trigger: footer,
+      start: "top bottom-=100px",
+      onEnter: () => {
+        gsap.to(footer, {
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          clearProps: "willChange",
+        });
+      },
+    });
+  }
+</script>
+
+<style>
+  .footer {
+    width: 100%;
+    z-index: 0;
+    background: #0c0c0c;
+    color: #e5e5e5;
+    padding: 3rem 2rem 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .footer-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2.5rem;
+  }
+
+  .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-logo-img {
+    filter: brightness(0) invert(1);
+  }
+
+  .footer-logo-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #fff;
+  }
+
+  .footer-tagline {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0;
+  }
+
+  .footer-heading {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0 0 1rem;
+  }
+
+  .footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .footer-links li {
+    line-height: 2;
+  }
+
+  .footer-links a {
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .footer-links a:hover {
+    color: #ffffff;
+  }
+
+  .footer-social a {
+    font-family: 'Barlow Condensed', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.85rem;
+  }
+
+  .social-icon {
+    width: 16px;
+    height: 16px;
+    opacity: 0.6;
+    flex-shrink: 0;
+  }
+
+  .footer-social a:hover .social-icon {
+    opacity: 1;
+  }
+
+  /* Partners */
+  .footer-partners {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    text-align: center;
+  }
+
+  .partners-heading {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+    margin: 0 0 1.25rem;
+  }
+
+  .partners-logos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 2.5rem;
+  }
+
+  .partners-logos a {
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+  }
+
+  .partners-logos a:hover {
+    opacity: 0.8;
+  }
+
+  .partners-logos img {
+    height: 32px;
+    filter: brightness(0) invert(1);
+  }
+
+  /* Bottom bar */
+  .footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .footer-legal {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .footer-legal a {
+    color: rgba(255, 255, 255, 0.4);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .footer-legal a:hover {
+    color: #ffffff;
+  }
+
+  .footer-credit a {
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .footer-credit a:hover {
+    color: #ffffff;
+  }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    .footer {
+      padding: 2rem 1.25rem 1.25rem;
+    }
+
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 1.75rem;
+    }
+
+    .footer-bottom {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .footer-legal {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .partners-logos {
+      gap: 1.5rem;
+    }
+
+    .partners-logos img {
+      height: 24px;
+    }
+  }
+</style>

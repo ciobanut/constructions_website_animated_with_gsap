@@ -79,7 +79,7 @@ const { images, title } = Astro.props;
 
   if (galleryElement) {
     const lg = lightGallery(galleryElement, {
-      plugins: [lgZoom, lgAutoplay, lgFullscreen, lgHash, lgThumbnail, lgMediumZoom],
+      plugins: [lgZoom, lgAutoplay, lgFullscreen, lgHash, lgThumbnail],
 
       // License key (free for open-source / non-commercial use)
       licenseKey: '0000-0000-000-0000',
@@ -98,7 +98,6 @@ const { images, title } = Astro.props;
       // Thumbnail strip
       thumbnail: true,
       animateThumb: true,
-      showThumbByDefault: false,
 
       // Zoom
       zoom: true,
@@ -107,7 +106,6 @@ const { images, title } = Astro.props;
       // Autoplay / slideshow
       autoplay: true,
       autoplayControls: true,
-      pauseOnHover: true,
       progressBar: true,
 
       // Fullscreen
