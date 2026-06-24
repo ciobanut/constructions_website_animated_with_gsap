@@ -1,113 +1,166 @@
 ---
 // src/components/TestimonialVideo.astro
-// Horizontally scrollable testimonial video slider
+// Full-viewport pinned video panels with scroll-driven scale/fade exit
 ---
 
 <section id="testimonial" class="testimonial-section">
-  <div class="max-w-7xl mx-auto">
-    <h2 class="testimonial-title">
-      ConstIQ created<br />
-      something better than I ever<br />
-      could have imagined
-    </h2>
-  </div>
+  <h2 class="testimonial-title">
+    ConstIQ created<br />
+    something better than I ever<br />
+    could have imagined
+  </h2>
 
-  <div class="scroll-wrapper">
-    <div class="scroll-track">
-      <!-- Slide 1 — real video -->
-      <div class="video-card">
-        <div class="video-box">
-          <iframe
-            src="https://www.youtube.com/embed/07V-FfsUUYk?controls=1&rel=0&modestbranding=1&enablejsapi=1"
-            allow="encrypted-media"
-            allowfullscreen></iframe>
-        </div>
-      </div>
-
-      <!-- Slide 2 — placeholder -->
-      <div class="video-card placeholder">
-        <div class="video-box">
-          <div class="placeholder-content">
-            <svg
-              class="play-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <polygon points="5 3 19 12 5 21 5 3"></polygon>
-            </svg>
-            <span class="placeholder-label">Testimonial 2</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Slide 3 — placeholder -->
-      <div class="video-card placeholder">
-        <div class="video-box">
-          <div class="placeholder-content">
-            <svg
-              class="play-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <polygon points="5 3 19 12 5 21 5 3"></polygon>
-            </svg>
-            <span class="placeholder-label">Testimonial 3</span>
-          </div>
-        </div>
+  <!-- Panel 1 -->
+  <div class="video-card" data-testimonial>
+    <div class="video-card-inner">
+      <div class="video-box">
+        <iframe
+          src="https://www.youtube.com/embed/07V-FfsUUYk?controls=1&rel=0&modestbranding=1&enablejsapi=1"
+          allow="encrypted-media"
+          allowfullscreen></iframe>
       </div>
     </div>
   </div>
 
-  <!-- Scroll hint -->
-  <p class="scroll-hint">Scroll →</p>
+  <!-- Panel 2 -->
+  <div class="video-card" data-testimonial>
+    <div class="video-card-inner">
+      <div class="video-box">
+        <iframe
+          src="https://www.youtube.com/embed/Jw7s42Op2ao?controls=1&rel=0&modestbranding=1&enablejsapi=1"
+          allow="encrypted-media"
+          allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel 3 -->
+  <div class="video-card" data-testimonial>
+    <div class="video-card-inner">
+      <div class="video-box">
+        <iframe
+          src="https://www.youtube.com/embed/zSk4kT8IMbQ?controls=1&rel=0&modestbranding=1&enablejsapi=1"
+          allow="encrypted-media"
+          allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel 4 -->
+  <div class="video-card" data-testimonial>
+    <div class="video-card-inner">
+      <div class="video-box">
+        <iframe
+          src="https://www.youtube.com/embed/YVQ2WA0SBMM?controls=1&rel=0&modestbranding=1&enablejsapi=1"
+          allow="encrypted-media"
+          allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
 </section>
 
 <script>
   import { gsap } from "gsap";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
-
   gsap.registerPlugin(ScrollTrigger);
 
-  gsap.from(".testimonial-title", {
-    y: 40,
-    opacity: 0,
-    duration: 0.8,
-    ease: "power3.out",
-    scrollTrigger: {
-      trigger: ".testimonial-section",
-      start: "top 80%",
-      end: "top 50%",
-      toggleActions: "play none none reverse",
-    },
-  });
+  (function initVideoPanels() {
+    const title = document.querySelector(".testimonial-title");
+    const section = document.querySelector("#testimonial");
+    const panels = gsap.utils.toArray("[data-testimonial]");
 
-  gsap.from(".video-card", {
-    y: 60,
-    opacity: 0,
-    duration: 0.8,
-    stagger: 0.15,
-    ease: "power3.out",
-    scrollTrigger: {
-      trigger: ".testimonial-section",
-      start: "top 80%",
-      end: "top 50%",
-      toggleActions: "play none none reverse",
-    },
-  });
+    if (!panels.length || !section) return;
+
+    // ── Entrance animation for the section title ──
+    gsap.from(title, {
+      y: 40,
+      opacity: 0,
+      duration: 0.8,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: section,
+        start: "top 80%",
+        end: "top 50%",
+        toggleActions: "play none none reverse",
+      },
+    });
+
+    // ── prefers-reduced-motion: skip all pin/scrub logic ──
+    const mm = gsap.matchMedia();
+    mm.add("(prefers-reduced-motion: no-preference)", () => {
+      // Clone array; last panel is never pinned
+      const pinPanels = [...panels];
+      const last = pinPanels.pop();
+
+      pinPanels.forEach((panel) => {
+        const inner = panel.querySelector(".video-card-inner");
+        if (!inner) return;
+
+        const panelEl = panel;
+
+        // Measure content height vs viewport
+        const windowHeight = window.innerHeight;
+        const panelHeight = inner.offsetHeight;
+        const difference = panelHeight - windowHeight;
+
+        // Ratio of total animation spent on "fake-scrolling" tall content
+        const fakeScrollRatio =
+          difference > 0
+            ? difference / (difference + windowHeight)
+            : 0;
+
+        // Add bottom margin so the next panel doesn't overlap
+        if (fakeScrollRatio) {
+          panelEl.style.marginBottom =
+            panelHeight * fakeScrollRatio + "px";
+        }
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: panelEl,
+            start: "bottom bottom",
+            end: () =>
+              fakeScrollRatio
+                ? `+=${inner.offsetHeight}`
+                : "bottom top",
+            pin: true,
+            pinSpacing: false,
+            scrub: true,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        // ── Fake scroll for tall content ──
+        if (fakeScrollRatio) {
+          tl.to(inner, {
+            yPercent: -100,
+            y: window.innerHeight,
+            duration: 1 / (1 - fakeScrollRatio) - 1,
+            ease: "none",
+          });
+        }
+
+        // ── Exit: scale down + fade out (0.9 / 0.1 split) ──
+        tl.fromTo(
+          panelEl,
+          { scale: 1, opacity: 1 },
+          { scale: 0.7, opacity: 0.5, duration: 0.9, ease: "power2.in" },
+        ).to(panelEl, { opacity: 0, duration: 0.1, ease: "power2.in" });
+      });
+
+      // Cleanup on matchMedia reversion
+      return () => {
+        ScrollTrigger.getAll().forEach((st) => st.kill());
+      };
+    });
+  })();
 </script>
 
 <style>
   .testimonial-section {
     width: 100%;
-    padding: 5rem 0 6rem;
+    position: relative;
+    background: #ffffff;
   }
 
   .testimonial-title {
@@ -116,49 +169,36 @@
     font-weight: 600;
     line-height: 1.2;
     letter-spacing: 0.03em;
-    margin: 0 0 3rem;
-    padding: 0 2rem;
+    margin: 0;
+    padding: 5rem 2rem 3rem;
     text-align: left;
+    background: #ffffff;
   }
 
-  /* --- Horizontal scroll — full width --- */
-  .scroll-wrapper {
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 1rem;
-    scrollbar-width: thin;
-  }
-
-  .scroll-wrapper::-webkit-scrollbar {
-    height: 6px;
-  }
-
-  .scroll-wrapper::-webkit-scrollbar-track {
-    background: #e5e5e5;
-    border-radius: 3px;
-  }
-
-  .scroll-wrapper::-webkit-scrollbar-thumb {
-    background: #a0a0a0;
-    border-radius: 3px;
-  }
-
-  .scroll-track {
-    display: flex;
-    gap: 2rem;
-    width: max-content;
-    padding: 0.5rem 2rem;
-  }
-
+  /* ───────── Panel (full viewport) ───────── */
   .video-card {
-    width: clamp(300px, 70vw, 780px);
-    scroll-snap-align: start;
-    flex-shrink: 0;
+    width: 100vw;
+    height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    will-change: transform, opacity;
+  }
+
+  .video-card-inner {
+    max-width: 900px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
   }
 
   .video-box {
-    position: relative;
     width: 100%;
     aspect-ratio: 16 / 9;
     border-radius: 12px;
@@ -173,73 +213,27 @@
     border: 0;
   }
 
-  /* --- Placeholder styling --- */
-  .video-card.placeholder .video-box {
+  /* ───────── Placeholder panels (gradient bg) ───────── */
+  .video-card:nth-child(odd) {
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 
-  .placeholder-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    color: rgba(255, 255, 255, 0.7);
+  .video-card:nth-child(even) {
+    background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
   }
 
-  .play-icon {
-    width: 56px;
-    height: 56px;
-    opacity: 0.5;
-  }
-
-  .placeholder-label {
-    font-family: "Barlow", sans-serif;
-    font-size: 1.1rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-
-  /* --- Scroll hint --- */
-  .scroll-hint {
-    font-family: "Barlow", sans-serif;
-    font-size: 0.85rem;
-    color: #888;
-    text-align: right;
-    margin: 1rem 0 0;
-    padding: 0 2rem;
-    letter-spacing: 0.05em;
-    animation: pulse-hint 2s ease-in-out infinite;
-  }
-
-  @keyframes pulse-hint {
-    0%,
-    100% {
-      opacity: 0.4;
-    }
-    50% {
-      opacity: 1;
-    }
-  }
-
+  /* ───────── Responsive ───────── */
   @media (max-width: 767px) {
-    .testimonial-section {
-      padding: 3rem 0 4rem;
-    }
-
     .testimonial-title {
-      margin-bottom: 2rem;
+      padding: 3rem 1.5rem 2rem;
     }
 
     .video-card {
-      width: 85vw;
+      padding: 1rem;
     }
 
-    .scroll-track {
-      gap: 1.25rem;
+    .video-card-inner {
+      gap: 1rem;
     }
   }
 </style>
