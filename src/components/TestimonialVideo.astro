@@ -4,15 +4,14 @@
 ---
 
 <section id="testimonial" class="testimonial-section">
-  <h2 class="testimonial-title">
-    ConstIQ created<br />
-    something better than I ever<br />
-    could have imagined
-  </h2>
-
-  <!-- Panel 1 -->
+  <!-- Panel 1 — original title -->
   <div class="video-card" data-testimonial>
     <div class="video-card-inner">
+      <h2 class="panel-title">
+        ConstIQ created<br />
+        something better than I ever<br />
+        could have imagined
+      </h2>
       <div class="video-box">
         <iframe
           src="https://www.youtube.com/embed/07V-FfsUUYk?controls=1&rel=0&modestbranding=1&enablejsapi=1"
@@ -25,6 +24,10 @@
   <!-- Panel 2 -->
   <div class="video-card" data-testimonial>
     <div class="video-card-inner">
+      <h2 class="panel-title">
+        Precision in Every<br />
+        Project We Deliver
+      </h2>
       <div class="video-box">
         <iframe
           src="https://www.youtube.com/embed/Jw7s42Op2ao?controls=1&rel=0&modestbranding=1&enablejsapi=1"
@@ -37,6 +40,10 @@
   <!-- Panel 3 -->
   <div class="video-card" data-testimonial>
     <div class="video-card-inner">
+      <h2 class="panel-title">
+        Building the Future<br />
+        With Every Brick
+      </h2>
       <div class="video-box">
         <iframe
           src="https://www.youtube.com/embed/zSk4kT8IMbQ?controls=1&rel=0&modestbranding=1&enablejsapi=1"
@@ -49,6 +56,10 @@
   <!-- Panel 4 -->
   <div class="video-card" data-testimonial>
     <div class="video-card-inner">
+      <h2 class="panel-title">
+        Trust Built<br />
+        Over Generations
+      </h2>
       <div class="video-box">
         <iframe
           src="https://www.youtube.com/embed/YVQ2WA0SBMM?controls=1&rel=0&modestbranding=1&enablejsapi=1"
@@ -65,25 +76,27 @@
   gsap.registerPlugin(ScrollTrigger);
 
   (function initVideoPanels() {
-    const title = document.querySelector(".testimonial-title");
     const section = document.querySelector("#testimonial");
     const panels = gsap.utils.toArray("[data-testimonial]");
 
     if (!panels.length || !section) return;
 
-    // ── Entrance animation for the section title ──
-    gsap.from(title, {
-      y: 40,
-      opacity: 0,
-      duration: 0.8,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: section,
-        start: "top 80%",
-        end: "top 50%",
-        toggleActions: "play none none reverse",
-      },
-    });
+    // ── Entrance animation for the first panel title ──
+    const firstTitle = panels[0]?.querySelector(".panel-title");
+    if (firstTitle) {
+      gsap.from(firstTitle, {
+        y: 40,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: section,
+          start: "top 80%",
+          end: "top 50%",
+          toggleActions: "play none none reverse",
+        },
+      });
+    }
 
     // ── prefers-reduced-motion: skip all pin/scrub logic ──
     const mm = gsap.matchMedia();
@@ -160,19 +173,18 @@
   .testimonial-section {
     width: 100%;
     position: relative;
-    background: #ffffff;
+    background: #0c0c0c;
   }
 
-  .testimonial-title {
+  .panel-title {
     font-family: "Barlow Condensed", sans-serif;
     font-size: clamp(1.6rem, 4vw, 2.8rem);
     font-weight: 600;
     line-height: 1.2;
     letter-spacing: 0.03em;
-    margin: 0;
-    padding: 5rem 2rem 3rem;
-    text-align: left;
-    background: #ffffff;
+    margin: 0 0 1.5rem;
+    text-align: center;
+    color: #f3f4f6;
   }
 
   /* ───────── Panel (full viewport) ───────── */
@@ -187,6 +199,7 @@
     position: relative;
     overflow: hidden;
     will-change: transform, opacity;
+    background: #0c0c0c;
   }
 
   .video-card-inner {
@@ -213,19 +226,10 @@
     border: 0;
   }
 
-  /* ───────── Placeholder panels (gradient bg) ───────── */
-  .video-card:nth-child(odd) {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-  }
-
-  .video-card:nth-child(even) {
-    background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
-  }
-
   /* ───────── Responsive ───────── */
   @media (max-width: 767px) {
-    .testimonial-title {
-      padding: 3rem 1.5rem 2rem;
+    .panel-title {
+      margin-bottom: 1rem;
     }
 
     .video-card {
