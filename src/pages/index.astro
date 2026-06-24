@@ -6,6 +6,7 @@ import Footer from "../components/Footer.astro";
 import AnimatedTitle from "../components/AnimatedTitle.astro";
 import StatsSection from "../components/StatsSection.astro";
 import HorizontalGallery from "../components/HorizontalGallery.astro";
+import LogoTicker from "../components/LogoTicker.astro";
 
 const title = "Iraqi Construction";
 const subtitle = "Building the future with quality and trust";
@@ -48,6 +49,8 @@ const projects = await getCollection("projects");
     <HorizontalGallery projects={projects} />
 
     <StatsSection />
+
+    <LogoTicker />
   </main>
 
   <Footer />
