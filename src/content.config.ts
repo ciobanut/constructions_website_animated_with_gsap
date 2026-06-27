@@ -17,6 +17,13 @@ const projects = defineCollection({
     category: z.string().default('Construction'),
     coverImage: z.string(),
     galleryImages: z.array(z.string()).default([]),
+    map: z
+      .object({
+        x: z.number(),
+        y: z.number(),
+        zoom: z.number().optional().default(2.5),
+      })
+      .optional(),
   }),
 });
 

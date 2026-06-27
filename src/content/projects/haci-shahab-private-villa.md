@@ -10,6 +10,10 @@ status: "Completed"
 category: "Villa"
 coverImage: "/images/projects/HACI-SHAHAB-PRIVATE-VILLA/image36.jpeg"
 galleryImages: []
+map:
+  x: 66
+  y: 51.5
+  zoom: 2.8
 ---
 
 A luxurious private villa project delivered turnkey for Haci Shahab in Dream City. This project reflects Prominent's expertise in creating exclusive residential spaces with premium quality and refined finishing.
