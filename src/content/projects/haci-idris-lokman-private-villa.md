@@ -10,6 +10,10 @@ status: "Completed"
 category: "Villa"
 coverImage: "/images/projects/HACI-IDRIS-LOKMAN-PRIVATE-VILLA/image28.jpeg"
 galleryImages: []
+map:
+  x: 62
+  y: 55.5
+  zoom: 2.5
 ---
 
 A premium turnkey private villa project for Haci Idris & Lokman in Dream City, completed in 2023. This project showcases Prominent's continued excellence in delivering high-end residential solutions.
