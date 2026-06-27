@@ -1,0 +1,114 @@
+---
+import Layout from "../layouts/Layout.astro";
+import NavBar from "../components/NavBar.astro";
+import Footer from "../components/Footer.astro";
+import StatsSection from "../components/StatsSection.astro";
+---
+
+<Layout>
+  <title>About Us | Prominent</title>
+  <meta name="description" content="Learn about Prominent For Design & Construction — our history, values, and commitment to excellence." />
+
+  <NavBar />
+
+  <main class="z-10 relative bg-black min-h-screen">
+    <!-- Hero -->
+    <section class="relative pt-36 pb-16 md:pt-44 md:pb-20 px-6">
+      <div class="max-w-7xl mx-auto">
+        <p class="font-['Barlow_Condensed'] text-xs md:text-sm tracking-[0.2em] uppercase text-gray-500 mb-6">
+          About Us
+        </p>
+        <h1 class="font-['Barlow_Condensed'] font-bold text-white leading-[0.9] tracking-[-0.02em] text-[clamp(3rem,12vw,10rem)]">
+          About<br />Prominent
+        </h1>
+      </div>
+    </section>
+
+    <!-- Company Introduction -->
+    <section class="pb-16 md:pb-24 px-6">
+      <div class="max-w-7xl mx-auto">
+        <div class="max-w-3xl">
+          <p class="font-['Barlow'] text-lg md:text-xl text-gray-300 leading-relaxed mb-10 border-l-2 border-gray-700 pl-6">
+            Prominent is a professional construction company offering turnkey
+            construction projects and subcontracting services for large-scale
+            structures.
+          </p>
+
+          <div class="prose prose-invert prose-lg max-w-none prose-p:text-gray-400 prose-p:leading-relaxed prose-p:font-['Barlow'] prose-p:font-light prose-headings:font-['Barlow_Condensed'] prose-headings:text-white">
+            <p>
+              Operating with principles of quality, trust, and on-time delivery,
+              Prominent produces high-standard solutions in every project with
+              its experienced team.
+            </p>
+            <p>
+              With architectural excellence and superior craftsmanship, we add
+              value to living spaces and prestige projects. Established in 2009,
+              we bring over 17 years of expertise to every project we undertake.
+            </p>
+            <p>
+              Our company serves as a reliable solution partner in residential,
+              commercial, and institutional projects. From turnkey projects to
+              large-scale subcontracting services, we prioritize quality,
+              on-time delivery, and a professional business approach in all
+              processes.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <StatsSection />
+
+    <!-- Five Pillars Summary -->
+    <section class="py-20 md:py-28 px-6 bg-[#0c0c0c]">
+      <div class="max-w-7xl mx-auto">
+        <p class="font-['Barlow_Condensed'] text-xs md:text-sm tracking-[0.2em] uppercase text-gray-500 mb-6">
+          Our Values
+        </p>
+        <h2 class="font-['Barlow_Condensed'] font-bold text-white leading-[0.9] tracking-[-0.02em] text-[clamp(2rem,6vw,4rem)] mb-12 max-w-3xl">
+          The Five Pillars of Prestige
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="p-6 border border-white/10 rounded-xl bg-white/[0.02]">
+            <span class="font-['Barlow_Condensed'] text-4xl font-bold text-white/10">01</span>
+            <h3 class="font-['Barlow_Condensed'] text-lg font-bold text-white uppercase tracking-wide mt-2 mb-2">Architectural Excellence</h3>
+            <p class="font-['Barlow'] font-light text-gray-400 text-sm leading-relaxed">Combining aesthetics, functionality, and technical expertise to create timeless, high-quality structures.</p>
+          </div>
+          <div class="p-6 border border-white/10 rounded-xl bg-white/[0.02]">
+            <span class="font-['Barlow_Condensed'] text-4xl font-bold text-white/10">02</span>
+            <h3 class="font-['Barlow_Condensed'] text-lg font-bold text-white uppercase tracking-wide mt-2 mb-2">Precision Delivery</h3>
+            <p class="font-['Barlow'] font-light text-gray-400 text-sm leading-relaxed">Meticulous management of planning and execution processes to deliver projects flawlessly and on schedule.</p>
+          </div>
+          <div class="p-6 border border-white/10 rounded-xl bg-white/[0.02]">
+            <span class="font-['Barlow_Condensed'] text-4xl font-bold text-white/10">03</span>
+            <h3 class="font-['Barlow_Condensed'] text-lg font-bold text-white uppercase tracking-wide mt-2 mb-2">Refined Finishing</h3>
+            <p class="font-['Barlow'] font-light text-gray-400 text-sm leading-relaxed">The true value of a building lies in the details. We complete every project to the highest aesthetic standards.</p>
+          </div>
+          <div class="p-6 border border-white/10 rounded-xl bg-white/[0.02]">
+            <span class="font-['Barlow_Condensed'] text-4xl font-bold text-white/10">04</span>
+            <h3 class="font-['Barlow_Condensed'] text-lg font-bold text-white uppercase tracking-wide mt-2 mb-2">Superior Standards</h3>
+            <p class="font-['Barlow'] font-light text-gray-400 text-sm leading-relaxed">Prioritizing quality, safety, and sustainability. Building long-lasting structures with international-standard solutions.</p>
+          </div>
+          <div class="p-6 border border-white/10 rounded-xl bg-white/[0.02]">
+            <span class="font-['Barlow_Condensed'] text-4xl font-bold text-white/10">05</span>
+            <h3 class="font-['Barlow_Condensed'] text-lg font-bold text-white uppercase tracking-wide mt-2 mb-2">Customer Trust</h3>
+            <p class="font-['Barlow'] font-light text-gray-400 text-sm leading-relaxed">Building long-term partnerships based on transparent communication and mutual trust.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<script>
+  import { gsap } from "gsap";
+
+  gsap.from("main", { y: 40, opacity: 0, duration: 0.8, ease: "power2.out" });
+  gsap.from("h1", { y: 60, opacity: 0, duration: 1, delay: 0.2, ease: "power3.out" });
+  gsap.from(".border-l-2", { y: 30, opacity: 0, duration: 0.8, delay: 0.4, ease: "power2.out" });
+  gsap.from(".prose", { y: 20, opacity: 0, duration: 0.8, delay: 0.5, ease: "power2.out" });
+</script>
