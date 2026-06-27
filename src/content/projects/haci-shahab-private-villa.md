@@ -8,8 +8,15 @@ client: "HACI SHAHAB"
 scope: "Turnkey"
 status: "Completed"
 category: "Villa"
-coverImage: "/images/projects/HACI-SHAHAB-PRIVATE-VILLA/image36.jpeg"
-galleryImages: []
+coverImage: "/images/projects/HACI-SHAHAB-PRIVATE-VILLA/gallery-1.png"
+galleryImages: [
+    "/images/projects/HACI-SHAHAB-PRIVATE-VILLA/gallery-1.png",
+    "/images/projects/HACI-SHAHAB-PRIVATE-VILLA/gallery-2.png",
+    "/images/projects/HACI-SHAHAB-PRIVATE-VILLA/gallery-3.png",
+    "/images/projects/HACI-SHAHAB-PRIVATE-VILLA/gallery-4.png",
+    "/images/projects/HACI-SHAHAB-PRIVATE-VILLA/gallery-5.png",
+    "/images/projects/HACI-SHAHAB-PRIVATE-VILLA/gallery-6.png",
+]
 map:
   x: 66
   y: 51.5
