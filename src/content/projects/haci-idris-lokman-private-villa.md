@@ -8,8 +8,11 @@ client: "HACI IDRIS & LOKMAN"
 scope: "Turnkey"
 status: "Completed"
 category: "Villa"
-coverImage: "/images/projects/HACI-IDRIS-LOKMAN-PRIVATE-VILLA/image28.jpeg"
-galleryImages: []
+coverImage: "/images/projects/HACI-IDRIS-LOKMAN-PRIVATE-VILLA/gallery-1.png"
+galleryImages: [
+    "/images/projects/HACI-IDRIS-LOKMAN-PRIVATE-VILLA/gallery-1.png",
+    "/images/projects/HACI-IDRIS-LOKMAN-PRIVATE-VILLA/gallery-2.png"
+]
 map:
   x: 62
   y: 55.5

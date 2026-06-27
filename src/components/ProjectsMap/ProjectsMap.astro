@@ -1,0 +1,203 @@
+---
+/**
+ * ProjectsMap.astro
+ * Main orchestrator component for the interactive projects map.
+ * Wires up data, renders all sub-components, and mounts the MapController.
+ */
+import { getCollection } from "astro:content";
+import MapStage from "./MapStage.astro";
+import ProjectThumbnail from "./ProjectThumbnail.astro";
+import ProjectOverlay from "./ProjectOverlay.astro";
+import type { ProjectMapData } from "./types";
+
+const allProjects = await getCollection("projects");
+
+// Only include projects that have map coordinates
+const projects: ProjectMapData[] = allProjects
+  .filter((p) => p.data.map)
+  .map((p) => ({
+    title: p.data.title,
+    slug: p.data.slug,
+    coverImage: p.data.coverImage,
+    description: p.body || "",
+    map: {
+      x: p.data.map!.x,
+      y: p.data.map!.y,
+      zoom: p.data.map!.zoom,
+    },
+  }));
+---
+
+<section class="projects-map-section" data-projects-section>
+  <MapStage mapPath="/maps/middle-east.svg" />
+
+  {
+    projects.map((project) => (
+      <ProjectThumbnail project={project} />
+    ))
+  }
+
+  <ProjectOverlay />
+
+  <!-- Embedded project data for client-side script -->
+  <script
+    type="application/json"
+    id="projects-map-data"
+    set:html={JSON.stringify(projects)}
+  ></script>
+
+  <!-- Scroll indicator -->
+  <div class="scroll-indicator" data-scroll-indicator>
+    <div class="scroll-indicator-line"></div>
+    <span class="scroll-indicator-text">Scroll to explore</span>
+  </div>
+</section>
+
+<style>
+  .projects-map-section {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background: #0a0a0a;
+  }
+
+  .scroll-indicator {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    z-index: 20;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+  }
+
+  .scroll-indicator-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.5));
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  .scroll-indicator-text {
+    font-family: "Barlow Condensed", sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+  }
+
+  @keyframes scrollPulse {
+    0%,
+    100% {
+      opacity: 0.3;
+      transform: scaleY(0.8);
+    }
+    50% {
+      opacity: 1;
+      transform: scaleY(1);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .scroll-indicator {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  import { MapController } from "./MapController";
+  import type { ProjectMapData } from "./types";
+
+  function mountMapController() {
+    const section = document.querySelector("[data-projects-section]") as HTMLElement;
+    const mapContainer = document.querySelector("[data-map-container]") as HTMLElement;
+    const overlay = document.querySelector("[data-overlay]") as HTMLElement;
+    const overlayImage = document.querySelector("[data-overlay-image]") as HTMLImageElement;
+    const overlayTitle = document.querySelector("[data-overlay-title]") as HTMLElement;
+    const overlayDescription = document.querySelector("[data-overlay-description]") as HTMLElement;
+    const overlayLink = document.querySelector("[data-overlay-link]") as HTMLAnchorElement;
+    const stage = document.querySelector("[data-map-stage]") as HTMLElement;
+    const scrollIndicator = document.querySelector("[data-scroll-indicator]") as HTMLElement;
+
+    if (!section || !mapContainer) return;
+
+    const thumbnails = Array.from(
+      document.querySelectorAll("[data-project-slug]")
+    ) as HTMLElement[];
+
+    // Read project data from embedded JSON
+    const dataEl = document.getElementById("projects-map-data");
+    let projects: ProjectMapData[] = [];
+    if (dataEl) {
+      try {
+        projects = JSON.parse(dataEl.textContent || "[]");
+      } catch {
+        // Fallback: build from DOM
+        projects = thumbnails.map((thumb) => {
+          const slug = thumb.dataset.projectSlug || "";
+          const img = thumb.querySelector("img");
+          const style = thumb.getAttribute("style") || "";
+          const xMatch = style.match(/left:\s*([\d.]+)/);
+          const yMatch = style.match(/top:\s*([\d.]+)/);
+          const title = thumb.querySelector(".thumb-title")?.textContent || "";
+          return {
+            title,
+            slug,
+            coverImage: img?.src || "",
+            description: "",
+            map: {
+              x: xMatch ? parseFloat(xMatch[1]) : 50,
+              y: yMatch ? parseFloat(yMatch[1]) : 50,
+              zoom: 2.5,
+            },
+          };
+        });
+      }
+    }
+
+    if (projects.length === 0) return;
+
+    const controller = new MapController(projects);
+    controller.init({
+      section,
+      mapContainer,
+      thumbnails,
+      overlay,
+      overlayImage,
+      overlayTitle,
+      overlayDescription,
+      overlayLink,
+      stage,
+    });
+
+    // Hide scroll indicator on scroll
+    let scrollHidden = false;
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (!scrollHidden && window.scrollY > 50) {
+          scrollHidden = true;
+          if (scrollIndicator) scrollIndicator.style.opacity = "0";
+        }
+      },
+      { passive: true }
+    );
+  }
+
+  // Run on page load
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", mountMapController);
+  } else {
+    mountMapController();
+  }
+
+  // Run on Astro page transitions
+  document.addEventListener("astro:page-load", mountMapController);
+</script>

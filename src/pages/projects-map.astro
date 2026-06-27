@@ -1,0 +1,35 @@
+---
+/**
+ * projects-map.astro
+ * Page route for the interactive projects map.
+ */
+import Layout from "../layouts/Layout.astro";
+import NavBar from "../components/NavBar.astro";
+import ProjectsMap from "../components/ProjectsMap/ProjectsMap.astro";
+---
+
+<Layout>
+  <title>Projects Map | Prominent</title>
+  <meta
+    name="description"
+    content="Explore Prominent's construction projects across the Middle East on an interactive animated map."
+  />
+
+  <NavBar />
+
+  <main class="z-10 relative bg-[#0a0a0a] min-h-screen">
+    <ProjectsMap />
+  </main>
+</Layout>
+
+<script>
+  import { gsap } from "gsap";
+
+  // Fade-in on page load
+  gsap.from("main", {
+    y: 20,
+    opacity: 0,
+    duration: 0.6,
+    ease: "power2.out",
+  });
+</script>
