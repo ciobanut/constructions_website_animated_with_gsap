@@ -12,6 +12,7 @@ const projects = defineCollection({
     constructionArea: z.string(),
     landArea: z.string().optional(),
     client: z.string(),
+    scope: z.string().optional(),
     status: z.string().default('Completed'),
     category: z.string().default('Construction'),
     coverImage: z.string(),

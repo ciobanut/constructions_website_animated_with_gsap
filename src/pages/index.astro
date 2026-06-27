@@ -9,9 +9,10 @@ import ServicesSection from "../components/ServicesSection.astro";
 import HorizontalGallery from "../components/HorizontalGallery.astro";
 import LogoTicker from "../components/LogoTicker.astro";
 import TestimonialVideo from "../components/TestimonialVideo.astro";
+import PillarsSection from "../components/PillarsSection.astro";
 
-const title = "Iraqi Construction";
-const subtitle = "Building the future with quality and trust";
+const title = "Prominent";
+const subtitle = "We add value to buildings, we add trust to projects";
 const projects = await getCollection("projects");
 const services = (await getCollection("services")).sort(
   (a, b) => a.data.order - b.data.order,
@@ -51,11 +52,15 @@ const services = (await getCollection("services")).sort(
       </div>
     </section>
 
+    <video class="hero__media hero__media--video" src="https://www.bechtel.com/wp-content/uploads/2024/10/d87d-4b9c-b68c-117a0309cbf8.mp4" poster="" autoplay="" loop="" muted="" playsinline="" preload="auto" data-dynamic-id="csp-6318a942877f"></video>
+
     <HorizontalGallery projects={projects} />
 
     <StatsSection />
 
     <ServicesSection services={services} />
+
+    <PillarsSection />
 
     <LogoTicker />
 

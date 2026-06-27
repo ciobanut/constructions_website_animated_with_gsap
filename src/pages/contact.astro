@@ -1,0 +1,202 @@
+---
+import Layout from "../layouts/Layout.astro";
+import NavBar from "../components/NavBar.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout>
+  <title>Contact Us | Prominent</title>
+  <meta name="description" content="Get in touch with Prominent For Design & Construction. Reach us by phone, email, or visit our office in Erbil." />
+
+  <NavBar />
+
+  <main class="z-10 relative bg-black min-h-screen">
+    <!-- Hero -->
+    <section class="relative pt-36 pb-16 md:pt-44 md:pb-20 px-6">
+      <div class="max-w-7xl mx-auto">
+        <p class="font-['Barlow_Condensed'] text-xs md:text-sm tracking-[0.2em] uppercase text-gray-500 mb-6">
+          Get in Touch
+        </p>
+        <h1 class="font-['Barlow_Condensed'] font-bold text-white leading-[0.9] tracking-[-0.02em] text-[clamp(3rem,12vw,10rem)]">
+          Contact Us
+        </h1>
+      </div>
+    </section>
+
+    <!-- Contact Content -->
+    <section class="pb-24 md:pb-32 px-6">
+      <div class="max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+          <!-- Left: Contact Form -->
+          <div>
+            <h2 class="font-['Barlow_Condensed'] text-2xl font-bold text-white uppercase tracking-wide mb-6">
+              Send Us a Message
+            </h2>
+
+            <form
+              action="https://formspree.io/f/xpzqlkej"
+              method="POST"
+              class="space-y-5"
+            >
+              <div>
+                <label for="name" class="block font-['Barlow_Condensed'] text-sm uppercase tracking-wider text-gray-400 mb-2">Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  required
+                  class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white font-['Barlow'] text-sm focus:outline-none focus:border-white/30 transition-colors duration-300"
+                  placeholder="Your name"
+                />
+              </div>
+
+              <div>
+                <label for="email" class="block font-['Barlow_Condensed'] text-sm uppercase tracking-wider text-gray-400 mb-2">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  required
+                  class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white font-['Barlow'] text-sm focus:outline-none focus:border-white/30 transition-colors duration-300"
+                  placeholder="your@email.com"
+                />
+              </div>
+
+              <div>
+                <label for="phone" class="block font-['Barlow_Condensed'] text-sm uppercase tracking-wider text-gray-400 mb-2">Phone</label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white font-['Barlow'] text-sm focus:outline-none focus:border-white/30 transition-colors duration-300"
+                  placeholder="+964 XXX XXX XXX"
+                />
+              </div>
+
+              <div>
+                <label for="message" class="block font-['Barlow_Condensed'] text-sm uppercase tracking-wider text-gray-400 mb-2">Message</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows="5"
+                  required
+                  class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white font-['Barlow'] text-sm focus:outline-none focus:border-white/30 transition-colors duration-300 resize-none"
+                  placeholder="Tell us about your project..."
+                ></textarea>
+              </div>
+
+              <button
+                type="submit"
+                class="font-['Barlow_Condensed'] text-sm uppercase tracking-[0.15em] bg-white text-black font-bold px-8 py-3 rounded-lg hover:bg-gray-200 transition-colors duration-300"
+              >
+                Send Message
+              </button>
+            </form>
+          </div>
+
+          <!-- Right: Contact Info + Map -->
+          <div>
+            <h2 class="font-['Barlow_Condensed'] text-2xl font-bold text-white uppercase tracking-wide mb-6">
+              Contact Information
+            </h2>
+
+            <div class="space-y-6 mb-10">
+              <!-- Phone -->
+              <div class="flex items-start gap-4">
+                <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center flex-shrink-0">
+                  <svg class="w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                  </svg>
+                </div>
+                <div>
+                  <p class="font-['Barlow_Condensed'] text-xs uppercase tracking-wider text-gray-500 mb-1">Phone / WhatsApp</p>
+                  <a href="tel:+9647501226498" class="font-['Barlow'] text-white hover:text-gray-300 transition-colors">+964 750 122 6498</a>
+                </div>
+              </div>
+
+              <!-- Email -->
+              <div class="flex items-start gap-4">
+                <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center flex-shrink-0">
+                  <svg class="w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                    <polyline points="22,6 12,13 2,6" />
+                  </svg>
+                </div>
+                <div>
+                  <p class="font-['Barlow_Condensed'] text-xs uppercase tracking-wider text-gray-500 mb-1">Email</p>
+                  <a href="mailto:34prominent@gmail.com" class="font-['Barlow'] text-white hover:text-gray-300 transition-colors">34prominent@gmail.com</a>
+                </div>
+              </div>
+
+              <!-- Address -->
+              <div class="flex items-start gap-4">
+                <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center flex-shrink-0">
+                  <svg class="w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                </div>
+                <div>
+                  <p class="font-['Barlow_Condensed'] text-xs uppercase tracking-wider text-gray-500 mb-1">Office</p>
+                  <p class="font-['Barlow'] text-white">Ankawa ashtar street no: 245/2/479</p>
+                  <p class="font-['Barlow'] text-gray-400">Erbil, Iraq</p>
+                </div>
+              </div>
+
+              <!-- Hours -->
+              <div class="flex items-start gap-4">
+                <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center flex-shrink-0">
+                  <svg class="w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <polyline points="12 6 12 12 16 14" />
+                  </svg>
+                </div>
+                <div>
+                  <p class="font-['Barlow_Condensed'] text-xs uppercase tracking-wider text-gray-500 mb-1">Business Hours</p>
+                  <p class="font-['Barlow'] text-white">Monday – Saturday</p>
+                  <p class="font-['Barlow'] text-gray-400">08:00 – 18:00</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- WhatsApp CTA -->
+            <a
+              href="https://wa.me/9647501226498"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-3 font-['Barlow_Condensed'] text-sm uppercase tracking-[0.15em] bg-[#25d366] text-white font-bold px-6 py-3 rounded-lg hover:bg-[#20bd5a] transition-colors duration-300 mb-10"
+            >
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+              </svg>
+              Message us on WhatsApp
+            </a>
+
+            <!-- Google Maps -->
+            <div class="rounded-xl overflow-hidden border border-white/10">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d52253.39380147543!2d44.004555!3d36.192157!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4000724f5a74a5d9%3A0x8f5b0e9e7a9e3e9e!2sAnkawa%2C%20Erbil%2C%20Iraq!5e0!3m2!1sen!2s!4v1!4m4!1m2!2m1!1sAnkawa%2Bashtar%2Bstreet!5e0!3m2!1sen!2s!4v1"
+                width="100%"
+                height="250"
+                style="border:0;"
+                allowfullscreen=""
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                title="Prominent office location"
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<script>
+  import { gsap } from "gsap";
+  gsap.from("main", { y: 40, opacity: 0, duration: 0.8, ease: "power2.out" });
+  gsap.from("h1", { y: 60, opacity: 0, duration: 1, delay: 0.2, ease: "power3.out" });
+  gsap.from("form", { y: 30, opacity: 0, duration: 0.8, delay: 0.3, ease: "power2.out" });
+</script>

@@ -21,7 +21,7 @@ const currentIndex = allProjects.findIndex((p) => p.data.slug === data.slug);
 const prevProject = currentIndex > 0 ? allProjects[currentIndex - 1] : null;
 const nextProject =
   currentIndex < allProjects.length - 1 ? allProjects[currentIndex + 1] : null;
-const pageTitle = `${data.title} | Iraqi Construction`;
+const pageTitle = `${data.title} | Prominent`;
 const metaDescription = data.location
   ? `${data.title} — ${data.location}`
   : data.title;

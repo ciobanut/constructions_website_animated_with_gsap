@@ -9,16 +9,14 @@ interface StatItem {
 }
 
 const stats: StatItem[] = [
-  { label: "YEARS", target: 13, suffix: "+" },
-  { label: "CUSTOMERS", target: 50, suffix: "+" },
-  { label: "PROJECTS", target: 85, suffix: "+" },
-  { label: "TOTAL PROJECT AREA", target: 650000, suffix: " m²" },
+  { label: "YEARS OF EXPERIENCE", target: 17, suffix: "+" },
+  { label: "COMPLETED PROJECTS", target: 27, suffix: "+" },
 ];
 ---
 
 <section id="stats-section" class="py-20 md:py-28 bg-[#0c0c0c]">
   <div class="max-w-7xl mx-auto px-6">
-    <div class="flex flex-wrap justify-center gap-12 lg:gap-16">
+    <div class="flex flex-wrap justify-center gap-12 lg:gap-24">
       {
         stats.map((stat) => (
           <div class="stats-item text-center">
