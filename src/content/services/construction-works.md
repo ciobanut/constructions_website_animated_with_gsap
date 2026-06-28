@@ -6,7 +6,7 @@ shortDescription: "Full-scale construction execution for residential, commercial
 description: "Prominent delivers comprehensive construction works for projects of all scales. Our team executes construction with a focus on quality, safety, and adherence to timelines."
 icon: "building"
 featured: true
-image: "/images/services/Construction-Works.jpg"
+image: "/images/services/Construction-Works.png"
 ---
 
 Prominent delivers comprehensive construction works for projects of all scales. Our team executes construction with a focus on quality, safety, and adherence to timelines.

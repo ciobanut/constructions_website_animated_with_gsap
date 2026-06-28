@@ -18,8 +18,20 @@ interface Props {
 const { services } = Astro.props;
 ---
 
-<section id="services-section" class="py-24 md:py-32 bg-black">
-  <div class="max-w-7xl mx-auto px-6">
+<section id="services-section" class="py-24 md:py-32 bg-black relative overflow-hidden">
+  <!-- Background image layers for crossfade on hover -->
+  <div id="services-bg-container" class="absolute inset-0 -z-0 overflow-hidden" aria-hidden="true">
+    <!-- Active layer — shows the current image -->
+    <div id="bg-active" class="bg-layer absolute inset-0 bg-cover bg-center" style="opacity: 0;">
+      <div class="absolute inset-0 bg-black/70"></div>
+    </div>
+    <!-- Incoming layer — fades in on hover -->
+    <div id="bg-incoming" class="bg-layer absolute inset-0 bg-cover bg-center" style="opacity: 0;">
+      <div class="absolute inset-0 bg-black/70"></div>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-6 relative z-10">
     <!-- Section label -->
     <p
       class="section-label font-['Barlow_Condensed'] text-xs md:text-sm tracking-[0.2em] uppercase text-gray-500 mb-16 md:mb-20"
@@ -27,15 +39,15 @@ const { services } = Astro.props;
       Our Expertise
     </p>
 
-    <!-- Services list -->
-    <div class="services-list flex flex-col gap-16 md:gap-20">
+    <!-- Services list — no gap, padding on each item to avoid dead hover zones -->
+    <div class="services-list flex flex-col">
       {
         services.map((service) => (
           <div
-            class="service-item spot-section group cursor-default relative overflow-hidden"
-            style="--radius: 100px; --x: 50%; --y: 50%;"
+            class="service-item group cursor-default relative overflow-hidden"
+            data-bg-image={service.data.image || ''}
           >
-            <!-- Front content layer (visible by default, sits below the overlay) -->
+            <!-- Front content layer -->
             <div class="relative z-10">
               <!-- Massive title (linked) -->
               <h2 class="service-title">
@@ -67,17 +79,6 @@ const { services } = Astro.props;
                        transition-all duration-700 ease-out"
               ></div>
             </div>
-
-            <!-- Spotlight overlay (on top of text, clipped to invisible by default) -->
-            {service.data.image && (
-              <div
-                class="spot-overlay absolute inset-0 z-20 pointer-events-none"
-                style={`background-image: url(${service.data.image}); background-size: cover; background-position: center;`}
-              >
-                <!-- Dark tint for text readability inside the spotlight circle -->
-                <div class="absolute inset-0 bg-black/60"></div>
-              </div>
-            )}
           </div>
         ))
       }
@@ -88,68 +89,116 @@ const { services } = Astro.props;
 
 
 <style>
-
-/* ─── Per-item spotlight variables ─── */
-.service-item.spot-section {
-  --radius: 100px;
-  --x: 50%;
-  --y: 50%;
-}
-
-/* Overlay: invisible by default */
-.service-item.spot-section .spot-overlay {
-  clip-path: circle(0 at var(--x) var(--y));
-  transition: clip-path 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
-}
-
-/* Overlay: revealed on hover */
-.service-item.spot-section.hover .spot-overlay {
-  clip-path: circle(var(--radius) at var(--x) var(--y));
-}
-
-/* Mobile: hide overlay entirely */
-@media (max-width: 767px) {
-  .service-item.spot-section .spot-overlay {
-    clip-path: none !important;
-    display: none;
+  /* Background layers sit behind content, will-change for compositor optimization */
+  .bg-layer {
+    will-change: opacity;
   }
-}
-
-/* Reduced motion: never show spotlight */
-@media (prefers-reduced-motion: reduce) {
-  .service-item.spot-section .spot-overlay {
-    clip-path: circle(0) !important;
-  }
-}
-
 </style>
 
 
 <script>
   import { gsap } from "gsap";
-document.addEventListener("DOMContentLoaded", () => {
-  const sections = document.querySelectorAll(".spot-section");
 
-  sections.forEach(section => {
-    const setX = gsap.quickSetter(section, "--x", "px");
-    const setY = gsap.quickSetter(section, "--y", "px");
+  document.addEventListener("DOMContentLoaded", () => {
+    const section = document.getElementById("services-section");
+    const bgActive = document.getElementById("bg-active");
+    const bgIncoming = document.getElementById("bg-incoming");
+    const items = document.querySelectorAll<HTMLElement>(".service-item");
 
-    section.addEventListener("mousemove", (e: MouseEvent) => {
-      const rect = section.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+    if (!section || !bgActive || !bgIncoming || !items.length) return;
 
-      section.classList.add("hover");
+    let currentImage: string | null = null;
+    let isTransitioning = false;
+    let activeTween: gsap.core.Timeline | null = null;
 
-      setX(x);
-      setY(y);
+    // Check reduced motion preference
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    const fadeDuration = prefersReducedMotion ? 0 : 0.6;
+
+    /**
+     * Crossfade to a new background image, or fade to black if url is null.
+     */
+    const crossfadeTo = (newImage: string | null) => {
+      // Skip if already showing this image
+      if (newImage === currentImage) return;
+
+      // Kill any in-progress crossfade
+      if (activeTween) {
+        activeTween.kill();
+        activeTween = null;
+      }
+
+      isTransitioning = true;
+
+      if (!newImage) {
+        // --- Fade to black ---
+        // Both layers fade out, revealing the section's bg-black
+        activeTween = gsap.timeline({
+          onComplete: () => {
+            gsap.set([bgActive, bgIncoming], { opacity: 0 });
+            currentImage = null;
+            isTransitioning = false;
+            activeTween = null;
+          },
+        });
+        activeTween.to(bgActive, { opacity: 0, duration: fadeDuration, ease: "power2.out" }, 0)
+                     .to(bgIncoming, { opacity: 0, duration: fadeDuration, ease: "power2.out" }, 0);
+        return;
+      }
+
+      if (currentImage === null) {
+        // --- From black to first image: just fade active in ---
+        bgActive.style.backgroundImage = `url(${newImage})`;
+        gsap.set(bgActive, { opacity: 0 });
+        gsap.set(bgIncoming, { opacity: 0 });
+
+        activeTween = gsap.to(bgActive, {
+          opacity: 1,
+          duration: fadeDuration,
+          ease: "power2.out",
+          onComplete: () => {
+            currentImage = newImage;
+            isTransitioning = false;
+            activeTween = null;
+          },
+        });
+        return;
+      }
+
+      // --- Crossfade between two images ---
+      // Set incoming layer to new image
+      bgIncoming.style.backgroundImage = `url(${newImage})`;
+      gsap.set(bgIncoming, { opacity: 0 });
+      gsap.set(bgActive, { opacity: 1 });
+
+      activeTween = gsap.timeline({
+        onComplete: () => {
+          // Swap: incoming → active
+          bgActive.style.backgroundImage = `url(${newImage})`;
+          gsap.set(bgActive, { opacity: 1 });
+          gsap.set(bgIncoming, { opacity: 0 });
+          currentImage = newImage;
+          isTransitioning = false;
+          activeTween = null;
+        },
+      });
+      activeTween.to(bgActive, { opacity: 0, duration: fadeDuration, ease: "power2.out" }, 0)
+                   .to(bgIncoming, { opacity: 1, duration: fadeDuration, ease: "power2.out" }, 0);
+    };
+
+    // Attach hover events
+    items.forEach((item) => {
+      const bgImage = item.getAttribute("data-bg-image");
+      if (!bgImage) return;
+
+      item.addEventListener("mouseenter", () => crossfadeTo(bgImage));
     });
 
-    section.addEventListener("mouseleave", () => {
-      section.classList.remove("hover");
-    });
+    // When mouse leaves the entire section, fade to black
+    section.addEventListener("mouseleave", () => crossfadeTo(null));
   });
-});
 </script>
 
 <script>
@@ -223,10 +272,6 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 
 <style>
-  .service-item:not(:last-child) .service-desc-wrapper {
-    /* Ensure only the last separator line is fully visible — handled by the w-0 transition */
-  }
-
   /* Reduced motion support */
   @media (prefers-reduced-motion: reduce) {
     .service-title,
