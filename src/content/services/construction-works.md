@@ -1,12 +1,12 @@
 ---
 title: "Construction Works"
 slug: "construction-works"
-order: 2
+order: 3
 shortDescription: "Full-scale construction execution for residential, commercial, and institutional structures — delivered with quality and precision."
 description: "Prominent delivers comprehensive construction works for projects of all scales. Our team executes construction with a focus on quality, safety, and adherence to timelines."
 icon: "building"
 featured: true
-image: "/images/services/Construction-Works.png"
+image: "/images/services/Construction-Works.avif"
 ---
 
 Prominent delivers comprehensive construction works for projects of all scales. Our team executes construction with a focus on quality, safety, and adherence to timelines.

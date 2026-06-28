@@ -6,7 +6,7 @@ shortDescription: "Premium interior and exterior finishing with fine craftsmansh
 description: "The true value of a building lies in its details. Prominent specializes in high-quality finishing works that transform structures into refined, livable spaces."
 icon: "paint"
 featured: true
-image: "/images/services/finish.png"
+image: "/images/services/finish.avif"
 ---
 
 The true value of a building lies in its details. Prominent specializes in high-quality finishing works that transform structures into refined, livable spaces.

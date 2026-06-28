@@ -6,7 +6,7 @@ shortDescription: "End-to-end project management ensuring on-time delivery, budg
 description: "Prominent offers professional project management services that ensure every project is delivered on time, within budget, and to the highest quality standards."
 icon: "clipboard"
 featured: true
-image: "/images/services/construction-project-management.webp"
+image: "/images/services/construction-project-management.avif"
 ---
 
 Prominent offers professional project management services that ensure every project is delivered on time, within budget, and to the highest quality standards.

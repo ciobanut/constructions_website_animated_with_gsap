@@ -6,7 +6,7 @@ shortDescription: "Combining aesthetics, functionality, and technical expertise 
 description: "Prominent offers comprehensive architectural design services that bring your vision to life. From initial concept development to detailed construction drawings, we manage the entire design process with attention to every detail."
 icon: "drawing"
 featured: true
-image: "/images/services/Architectural-Design.png"
+image: "/images/services/Architectural-Design.avif"
 ---
 
 Prominent offers comprehensive architectural design services that bring your vision to life. Our experienced team of architects and designers works closely with clients to develop innovative, functional, and aesthetically exceptional designs.

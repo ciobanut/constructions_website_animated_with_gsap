@@ -1,12 +1,12 @@
 ---
 title: "Civil & Construction Works"
 slug: "civil-construction-works"
-order: 6
+order: 2
 shortDescription: "Comprehensive civil engineering and infrastructure works for large-scale structures and development projects."
 description: "Prominent delivers robust civil engineering and construction solutions for large-scale infrastructure and building projects."
 icon: "hard-hat"
 featured: true
-image: "https://placehold.net/7-600x800.png"
+image: "/images/services/civil-construction-works.avif"
 ---
 
 Prominent delivers robust civil engineering and construction solutions for large-scale infrastructure and building projects.

@@ -8,13 +8,13 @@ client: "HACI SHAHAB"
 scope: "Turnkey"
 status: "Completed"
 category: "Villa"
-coverImage: "/images/projects/WHITE-HAUSE/gallery-1.png"
+coverImage: "/images/projects/WHITE-HAUSE/gallery-1.avif"
 galleryImages: [
-    "/images/projects/WHITE-HAUSE/gallery-1.png",
-    "/images/projects/WHITE-HAUSE/gallery-2.png",
-    "/images/projects/WHITE-HAUSE/gallery-3.png",
-    "/images/projects/WHITE-HAUSE/gallery-4.png",
-    "/images/projects/WHITE-HAUSE/gallery-5.png",
+    "/images/projects/WHITE-HAUSE/gallery-1.avif",
+    "/images/projects/WHITE-HAUSE/gallery-2.avif",
+    "/images/projects/WHITE-HAUSE/gallery-3.avif",
+    "/images/projects/WHITE-HAUSE/gallery-4.avif",
+    "/images/projects/WHITE-HAUSE/gallery-5.avif",
 ]
 map:
   x: 64
