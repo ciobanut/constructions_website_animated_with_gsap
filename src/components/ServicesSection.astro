@@ -66,7 +66,70 @@ const { services } = Astro.props;
     </div>
 
   </div>
+
+  <div id="parent" class="spot-section relative ">
+  <div class="front_layer w-full h-90 bg-red-600">
+    
+  </div>
+  <div class="back_layer spot-overlay absolute inset-0 bg-yellow-600/70">
+    
+  </div>
+  </div>
 </section>
+
+
+<style>
+
+#parent{
+    --radius: 100px;
+    --x: 50%;
+    --y: 50%;
+}
+
+#parent .spot-overlay{
+    clip-path: circle(0 at var(--x) var(--y));
+    transition: all 0.2s linear;
+}
+#parent.hover .spot-overlay{
+    clip-path: circle(var(--radius) at var(--x) var(--y));
+}
+
+@media (max-width: 767px){
+   #parent > *{
+    clip-path: none !important;
+}
+}
+
+
+</style>
+
+
+<script>
+  import { gsap } from "gsap";
+document.addEventListener("DOMContentLoaded", () => {
+  const sections = document.querySelectorAll(".spot-section");
+
+  sections.forEach(section => {
+    const setX = gsap.quickSetter(section, "--x", "px");
+    const setY = gsap.quickSetter(section, "--y", "px");
+
+    section.addEventListener("mousemove", (e: MouseEvent) => {
+      const rect = section.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      section.classList.add("hover");
+
+      setX(x);
+      setY(y);
+    });
+
+    section.addEventListener("mouseleave", () => {
+      section.classList.remove("hover");
+    });
+  });
+});
+</script>
 
 <script>
   import { gsap } from "gsap";

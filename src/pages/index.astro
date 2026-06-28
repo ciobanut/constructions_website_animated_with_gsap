@@ -28,10 +28,7 @@ const services = (await getCollection("services")).sort(
     <section id="home" class="hero">
       <!-- YouTube video background -->
       <div class="video-wrapper">
-        <iframe
-          src="https://www.youtube.com/embed/Dj2jErpwQQk?autoplay=1&loop=1&mute=1&controls=0&playsinline=1&modestbranding=1&rel=0&playlist=Dj2jErpwQQk&enablejsapi=1"
-          allow="autoplay; encrypted-media"
-          allowfullscreen></iframe>
+        <video class="hero__media hero__media--video" src="https://www.bechtel.com/wp-content/uploads/2024/10/d87d-4b9c-b68c-117a0309cbf8.mp4" poster="" autoplay="" loop="" muted="" playsinline="" preload="auto" data-dynamic-id="csp-6318a942877f"></video>
       </div>
 
       <!-- Fallback image — shown while video loads, then faded out via GSAP -->
@@ -52,7 +49,7 @@ const services = (await getCollection("services")).sort(
       </div>
     </section>
 
-    <video class="hero__media hero__media--video" src="https://www.bechtel.com/wp-content/uploads/2024/10/d87d-4b9c-b68c-117a0309cbf8.mp4" poster="" autoplay="" loop="" muted="" playsinline="" preload="auto" data-dynamic-id="csp-6318a942877f"></video>
+    
 
     <HorizontalGallery projects={projects} />
 

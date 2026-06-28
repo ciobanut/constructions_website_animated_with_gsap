@@ -11,7 +11,12 @@ category: "Villa"
 coverImage: "/images/projects/HACI-IDRIS-LOKMAN-PRIVATE-VILLA/gallery-1.png"
 galleryImages: [
     "/images/projects/HACI-IDRIS-LOKMAN-PRIVATE-VILLA/gallery-1.png",
-    "/images/projects/HACI-IDRIS-LOKMAN-PRIVATE-VILLA/gallery-2.png"
+    "/images/projects/HACI-IDRIS-LOKMAN-PRIVATE-VILLA/gallery-2.png",
+    "/images/projects/HACI-IDRIS-LOKMAN-PRIVATE-VILLA/gallery-3.png",
+    "/images/projects/HACI-IDRIS-LOKMAN-PRIVATE-VILLA/gallery-4.png",
+    "/images/projects/HACI-IDRIS-LOKMAN-PRIVATE-VILLA/gallery-5.png",
+    "/images/projects/HACI-IDRIS-LOKMAN-PRIVATE-VILLA/gallery-6.png",
+    "/images/projects/HACI-IDRIS-LOKMAN-PRIVATE-VILLA/gallery-7.png",
 ]
 map:
   x: 62

@@ -48,9 +48,40 @@ export function buildMasterTimeline(
     overlayLink,
   } = elements;
 
-  // Master timeline — ease is ignored by scrub but set as fallback
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+
+  // Per-project durations (proportional — scroll distance comes from end)
+  const D = {
+    intro: 1.5,
+    zoom: 2.0,
+    highlight: 0.8,
+    flipToFull: 1.2,
+    fadeInContent: 1.0,
+    hold: 2.0,
+    fadeOutContent: 0.8,
+    flipBack: 1.2,
+    resetThumb: 0.6,
+    transition: 1.5,
+    outro: 1.0,
+  };
+
+  // Build the master timeline WITH the scrollTrigger inline
   const master = gsap.timeline({
-    defaults: { ease: "none" },
+    scrollTrigger: {
+      trigger: section,
+      start: "top top",
+      end: () => {
+        // Calculate total timeline duration and multiply for scroll distance
+        // We'll set a large initial end, then refine after the timeline is built
+        return "+=8000";
+      },
+      pin: true,
+      scrub: 1.5,
+      anticipatePin: 1,
+      invalidateOnRefresh: true,
+      markers: false,
+    },
   });
 
   // Initial state
@@ -60,24 +91,6 @@ export function buildMasterTimeline(
     y: 40,
     filter: "blur(10px)",
   });
-
-  const vw = window.innerWidth;
-  const vh = window.innerHeight;
-
-  // Per-project durations (proportional — actual scroll distance comes from end)
-  const D = {
-    intro: 1.5,        // breathing room before first project
-    zoom: 2.0,         // map pan+zoom to project
-    highlight: 0.8,    // thumbnail glow/scale
-    flipToFull: 1.2,   // Flip thumbnail → fullscreen
-    fadeInContent: 1.0, // title + description fade in
-    hold: 2.0,          // hold on fullscreen project
-    fadeOutContent: 0.8, // title + description fade out
-    flipBack: 1.2,      // Flip fullscreen → thumbnail
-    resetThumb: 0.6,    // thumbnail scale reset
-    transition: 1.5,    // map moves to next project
-    outro: 1.0,         // breathing room after last project
-  };
 
   // ── Intro: hold on full map overview ──
   master.to({}, { duration: D.intro });
@@ -97,7 +110,7 @@ export function buildMasterTimeline(
     const stepLabel = `project-${index}`;
     const seq = gsap.timeline();
 
-    let t = 0; // local cursor
+    let t = 0;
 
     // ── 1. Zoom map toward project ──
     seq.to(
@@ -122,7 +135,7 @@ export function buildMasterTimeline(
         duration: D.highlight,
         ease: "power2.out",
       },
-      t - D.highlight * 0.4 // start slightly before zoom ends
+      t - D.highlight * 0.4
     );
 
     // ── 3. Flip thumbnail → fullscreen ──
@@ -169,7 +182,7 @@ export function buildMasterTimeline(
         duration: D.fadeInContent,
         ease: "power3.out",
       },
-      t + 0.15 // slight stagger
+      t + 0.15
     );
     t += D.fadeInContent;
 
@@ -217,8 +230,7 @@ export function buildMasterTimeline(
     );
     t += D.resetThumb;
 
-    // ── 9. Transition to next project (or outro) ──
-    // Smoothly pull map back slightly before next zoom
+    // ── 9. Transition to next project ──
     if (index < projects.length - 1) {
       const nextProject = projects[index + 1];
       const nextZoom = nextProject.map.zoom ?? config!.defaultZoom;
@@ -247,25 +259,7 @@ export function buildMasterTimeline(
   // ── Outro: hold on final view ──
   master.to({}, { duration: D.outro });
 
-  // Total scroll distance = total timeline duration × multiplier
-  // The timeline total duration in "seconds" is the sum of all D values.
-  // We multiply by a factor to get enough scroll pixels.
-  const totalDuration = master.duration();
-  const scrollMultiplier = 280; // pixels per "timeline second"
-  const totalScrollPx = Math.ceil(totalDuration * scrollMultiplier);
-
-  const st = ScrollTrigger.create({
-    trigger: section,
-    start: "top top",
-    end: `+=${totalScrollPx}`,
-    pin: true,
-    scrub: 1.5,
-    anticipatePin: 1,
-    invalidateOnRefresh: true,
-    animation: master,
-  });
-
-  return st;
+  return master.scrollTrigger!;
 }
 
 /**

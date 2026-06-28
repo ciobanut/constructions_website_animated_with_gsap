@@ -6,6 +6,7 @@ shortDescription: "Comprehensive civil engineering and infrastructure works for 
 description: "Prominent delivers robust civil engineering and construction solutions for large-scale infrastructure and building projects."
 icon: "hard-hat"
 featured: true
+image: "https://placehold.net/7-600x800.png"
 ---
 
 Prominent delivers robust civil engineering and construction solutions for large-scale infrastructure and building projects.

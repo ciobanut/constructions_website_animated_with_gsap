@@ -24,9 +24,6 @@ export class MapController {
     this.isDesktop = shouldAnimate();
   }
 
-  /**
-   * Initialize the map controller and build the timeline.
-   */
   init(elements: {
     section: HTMLElement;
     mapContainer: HTMLElement;
@@ -43,14 +40,12 @@ export class MapController {
       return;
     }
 
-    // Small delay to ensure DOM is ready
-    requestAnimationFrame(() => {
-      this.scrollTrigger = buildMasterTimeline(
-        this.projects,
-        elements,
-        this.config
-      )!;
-    });
+    // Build timeline synchronously — no rAF delay
+    this.scrollTrigger = buildMasterTimeline(
+      this.projects,
+      elements,
+      this.config
+    )!;
 
     // Refresh on resize (debounced)
     let resizeTimer: ReturnType<typeof setTimeout>;
@@ -65,9 +60,6 @@ export class MapController {
     });
   }
 
-  /**
-   * Mobile: no pinning, static map with clickable markers.
-   */
   private initMobile(elements: {
     section: HTMLElement;
     mapContainer: HTMLElement;
@@ -98,7 +90,6 @@ export class MapController {
       });
     });
 
-    // Close overlay on click
     overlay.addEventListener("click", (e) => {
       if (e.target === overlay) {
         gsap.to(overlay, {
@@ -110,9 +101,6 @@ export class MapController {
     });
   }
 
-  /**
-   * Kill all GSAP animations and ScrollTriggers.
-   */
   destroy(): void {
     if (this.scrollTrigger) {
       this.scrollTrigger.kill();

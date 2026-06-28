@@ -6,6 +6,7 @@ shortDescription: "Complete electrical installation and wiring services for resi
 description: "Prominent offers full electrical works services, handling everything from power distribution to low-current systems."
 icon: "bolt"
 featured: false
+image: "https://placehold.net/5-600x800.png"
 ---
 
 Prominent offers full electrical works services, handling everything from power distribution to low-current systems.
