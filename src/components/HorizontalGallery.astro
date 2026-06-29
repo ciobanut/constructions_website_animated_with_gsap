@@ -16,21 +16,21 @@ const { projects } = Astro.props;
 -->
 <section id="projects" class="projects-section">
   <div class="projects-container">
-    <div class="projects-track">
-      <!-- Intro Slide -->
-      <div class="project-slide intro-slide">
-        <div class="intro-content">
-          <span class="intro-label">Our Work</span>
-          <h2 class="intro-title">Featured Projects</h2>
-          <p class="intro-desc">
-            Delivering quality construction and design solutions across Iraq and
-            beyond
-          </p>
-          <button class="view-all-btn" data-view-all>View All Projects</button>
-        </div>
+    <!-- Fixed intro/title — stays in place while project slides scroll over it -->
+    <div class="intro-fixed">
+      <div class="intro-content">
+        <span class="intro-label">Our Work</span>
+        <h2 class="intro-title">Featured Projects</h2>
+        <p class="intro-desc">
+          Delivering quality construction and design solutions across Iraq and
+          beyond
+        </p>
+        <button class="view-all-btn" data-view-all>View All Projects</button>
       </div>
+    </div>
 
-      <!-- Projects — full HeroCover style -->
+    <!-- Horizontal track — only project slides, no intro -->
+    <div class="projects-track">
       {
         projects.map((project) => (
           <a href={`/projects/${project.data.slug}`} class="project-slide">
@@ -60,48 +60,59 @@ const { projects } = Astro.props;
       ".projects-container",
     );
     const track = document.querySelector<HTMLElement>(".projects-track");
+    const introFixed = document.querySelector<HTMLElement>(".intro-fixed");
     const slides = gsap.utils.toArray<HTMLElement>(".project-slide");
     const introContent = document.querySelector<HTMLElement>(".intro-content");
     const viewAllBtn =
       document.querySelector<HTMLButtonElement>("[data-view-all]");
 
-    if (!track || !container || slides.length === 0) return;
+    if (!track || !container || slides.length === 0 || !introFixed) return;
 
-    const getScrollDistance = () => track.scrollWidth - window.innerWidth;
-
-    // 1. Horizontal track tween → drives containerAnimation
-    const scrollTween = gsap.to(track, {
-      xPercent: () => {
-        const d = getScrollDistance();
-        return -(d / track.scrollWidth) * 100;
+    // ── 1. Horizontal track tween ──────────────────────────────────
+    // Track starts offset by 1 viewport so the first project slide
+    // enters from the right, leaving the fixed intro visible.
+    const scrollTween = gsap.fromTo(
+      track,
+      { x: () => window.innerWidth },
+      {
+        x: () => -(track.scrollWidth - window.innerWidth),
+        ease: "none",
+        onUpdate: function () {
+          // Fade out the intro as the last slides cover it
+          const p = this.progress();
+          const fadeStart = 0.6;
+          const opacity =
+            p > fadeStart
+              ? 1 - (p - fadeStart) / (1 - fadeStart)
+              : 1;
+          introFixed.style.opacity = String(opacity);
+        },
+        scrollTrigger: {
+          id: "gallery-horizontal",
+          trigger: container,
+          pin: true,
+          start: "top top",
+          end: () => `+=${track.scrollWidth}`,
+          scrub: true,
+          invalidateOnRefresh: true,
+        },
       },
-      ease: "none",
-      scrollTrigger: {
-        id: "gallery-horizontal",
-        trigger: container,
-        pin: true,
-        start: "top top",
-        end: () => `+=${getScrollDistance()}`,
-        scrub: true,
-        invalidateOnRefresh: true,
-      },
-    });
+    );
 
-    // 2. Per-slide exit animation (mirrors the GreenSock example)
-    // Each slide animates from fully visible to scaled+faded as it scrolls out left
+    // ── 2. Per-slide exit animation ────────────────────────────────
+    // Each project slide scales down & fades as it scrolls out left
     slides.slice(0, -1).forEach((slide) => {
       const tl = gsap.timeline({
         scrollTrigger: {
           containerAnimation: scrollTween,
           trigger: slide,
-          start: "left left", // slide is fully in viewport
-          end: "right left", // slide has fully exited to the left
+          start: "left left",
+          end: "right left",
           scrub: true,
         },
       });
 
-      // Exact structure from the example:
-      // 0.9 of the animation → scale 1→0.7, x 0→100vw (opposite direction), opacity 1→0.5
+      // 0.9 of the animation → scale 1→0.7, x 0→100vw, opacity 1→0.5
       // 0.1 of the animation → opacity 0.5→0
       tl.fromTo(
         slide,
@@ -109,7 +120,6 @@ const { projects } = Astro.props;
         {
           scale: 0.7,
           x: "100vw",
-          opacity: 0.5,
           duration: 0.9,
           ease: "power2.in",
           borderRadius: "30px",
@@ -118,7 +128,7 @@ const { projects } = Astro.props;
       ).to(slide, { opacity: 0, duration: 0.1, ease: "power2.in" });
     });
 
-    // 3. Intro slide entrance animation
+    // ── 3. Intro content entrance animation ────────────────────────
     if (introContent) {
       const introChildren = introContent.children;
       gsap.from(introChildren, {
@@ -135,19 +145,20 @@ const { projects } = Astro.props;
       });
     }
 
-    // 4. Click "View All Projects" → scroll to first project slide
+    // ── 4. View All → scroll to first project slide ────────────────
     if (viewAllBtn) {
       viewAllBtn.addEventListener("click", () => {
         const st = ScrollTrigger.getById("gallery-horizontal");
         if (st) {
+          // +1 viewport because the first project slide is
+          // offset right at the start of the pin
           const targetY = st.start + window.innerWidth;
           window.scrollTo({ top: targetY, behavior: "smooth" });
         }
       });
     }
 
-    // 5. Click project slide → center it in viewport quickly, then navigate
-    //    Prevents the jarring visual jump when an off-center slide is clicked
+    // ── 5. Click project slide → centre + navigate ─────────────────
     let isAnimating = false;
 
     container.addEventListener("click", (e) => {
@@ -163,7 +174,6 @@ const { projects } = Astro.props;
 
       e.preventDefault();
 
-      // prefers-reduced-motion → navigate immediately
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         window.location.href = href;
         return;
@@ -181,8 +191,9 @@ const { projects } = Astro.props;
         return;
       }
 
-      // Slide already centered → navigate directly
-      const targetY = st.start + slideIndex * window.innerWidth;
+      // +1 viewport offset because the track starts shifted right
+      const targetY = st.start + (slideIndex + 1) * window.innerWidth;
+
       if (Math.abs(window.scrollY - targetY) < 1) {
         window.location.href = href;
         return;
@@ -194,11 +205,8 @@ const { projects } = Astro.props;
         window.location.href = href;
       };
 
-      // Use native scrollTo (same mechanism as "View All" button) to
-      // avoid conflicts with ScrollTrigger pin/scrub.
       window.scrollTo({ top: targetY, behavior: "smooth" });
 
-      // Detect scroll completion: scrollend event + polling + timeout
       let cleanedUp = false;
       const done = () => {
         if (cleanedUp) return;
@@ -211,7 +219,6 @@ const { projects } = Astro.props;
 
       window.addEventListener("scrollend", done);
 
-      // RAF polling: once we reach the target → navigate
       const pollId = requestAnimationFrame(function check() {
         if (Math.abs(window.scrollY - targetY) < 2) {
           done();
@@ -220,7 +227,6 @@ const { projects } = Astro.props;
         requestAnimationFrame(check);
       });
 
-      // Safety timeout: 1s (smooth scroll usually takes 300-500ms)
       setTimeout(done, 1000);
     });
   })();
@@ -236,15 +242,20 @@ const { projects } = Astro.props;
   }
 
   .projects-track {
+    position: relative;
+    z-index: 2;
     display: flex;
     height: 100%;
     width: max-content;
     will-change: transform;
   }
 
-  /* ───────── Intro Slide ───────── */
-  .intro-slide {
-    display: flex !important;
+  /* ───────── Fixed Intro (behind project slides) ───────── */
+  .intro-fixed {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
     align-items: center;
     justify-content: center;
     background: #0c0c0c;
@@ -254,7 +265,6 @@ const { projects } = Astro.props;
     text-align: center;
     max-width: 40rem;
     padding: 2rem;
-    justify-self: center;
   }
 
   .intro-label {
