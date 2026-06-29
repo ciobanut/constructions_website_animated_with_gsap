@@ -1,6 +1,7 @@
 ---
 import CustomCursor from "../components/CustomCursor.astro";
 import WhatsAppButton from "../components/WhatsAppButton.astro";
+import NavBar from "../components/NavBar.astro";
 ---
 <!doctype html>
 <html lang="en" class="bg-[#0c0c0c]">
@@ -24,7 +25,8 @@ import WhatsAppButton from "../components/WhatsAppButton.astro";
 		/>
 	</head>
 	<body>
-		<slot />
+		<NavBar />
+<slot />
 		<CustomCursor />
 		<WhatsAppButton />
 	</body>

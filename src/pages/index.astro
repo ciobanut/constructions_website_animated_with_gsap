@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
-import NavBar from "../components/NavBar.astro";
+
 import Footer from "../components/Footer.astro";
 import AnimatedTitle from "../components/AnimatedTitle.astro";
 import StatsSection from "../components/StatsSection.astro";
@@ -20,8 +20,7 @@ const services = (await getCollection("services")).sort(
 ---
 
 <Layout>
-  <!-- NavBar floating above hero -->
-  <NavBar />
+
 
   <main class="main-content z-10 relative">
     <!-- Hero Section -->
@@ -37,7 +36,6 @@ const services = (await getCollection("services")).sort(
           muted
           playsinline
           preload="metadata"
-          fetchpriority="high"
         >
           <source src="/video-bg.webm" type="video/webm">
           <source src="/video-bg.mp4" type="video/mp4">

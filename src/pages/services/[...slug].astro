@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
-import NavBar from "../../components/NavBar.astro";
+
 import Footer from "../../components/Footer.astro";
 
 export async function getStaticPaths() {
@@ -22,7 +22,7 @@ const pageTitle = `${data.title} | Prominent`;
   <title>{pageTitle}</title>
   <meta name="description" content={data.shortDescription} />
 
-  <NavBar />
+
 
   <main class="z-10 relative bg-black min-h-screen">
     <!-- Hero area with massive service title -->
