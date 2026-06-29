@@ -1,6 +1,6 @@
 ---
 // src/components/TestimonialVideo.astro
-// Full-viewport pinned video panels with scroll-driven scale/fade exit
+// Full-viewport pinned testimonial panels with scroll-driven scale/fade exit
 ---
 
 <section id="testimonial" class="testimonial-section">
@@ -12,11 +12,14 @@
         something better than I ever<br />
         could have imagined
       </h2>
-      <div class="video-box">
-        <iframe
-          src="https://www.youtube.com/embed/07V-FfsUUYk?controls=1&rel=0&modestbranding=1&enablejsapi=1"
-          allow="encrypted-media"
-          allowfullscreen></iframe>
+      <div class="testimonial-card">
+        <blockquote class="testimonial-quote">
+          “Prominent's design and attention to detail exceeded every expectation. A professional team that delivers on time and at the highest standards.”
+        </blockquote>
+        <div class="testimonial-author">
+          <span class="testimonial-name">Haci Shahab</span>
+          <span class="testimonial-role">Client, Dream City Villa</span>
+        </div>
       </div>
     </div>
   </div>
@@ -28,11 +31,14 @@
         Precision in Every<br />
         Project We Deliver
       </h2>
-      <div class="video-box">
-        <iframe
-          src="https://www.youtube.com/embed/Jw7s42Op2ao?controls=1&rel=0&modestbranding=1&enablejsapi=1"
-          allow="encrypted-media"
-          allowfullscreen></iframe>
+      <div class="testimonial-card">
+        <blockquote class="testimonial-quote">
+          “We have collaborated on multiple projects, and every time the result has been excellent. Their precision execution makes all the difference.”
+        </blockquote>
+        <div class="testimonial-author">
+          <span class="testimonial-name">Haci Idris &amp; Lokman</span>
+          <span class="testimonial-role">Clients, Private Villa Project</span>
+        </div>
       </div>
     </div>
   </div>
@@ -44,11 +50,14 @@
         Building the Future<br />
         With Every Brick
       </h2>
-      <div class="video-box">
-        <iframe
-          src="https://www.youtube.com/embed/zSk4kT8IMbQ?controls=1&rel=0&modestbranding=1&enablejsapi=1"
-          allow="encrypted-media"
-          allowfullscreen></iframe>
+      <div class="testimonial-card">
+        <blockquote class="testimonial-quote">
+          “Professionalism, quality, and timeliness — exactly what we were looking for in a construction partner. Our project was delivered flawlessly.”
+        </blockquote>
+        <div class="testimonial-author">
+          <span class="testimonial-name">Dream City Residence</span>
+          <span class="testimonial-role">Commercial Development</span>
+        </div>
       </div>
     </div>
   </div>
@@ -60,11 +69,14 @@
         Trust Built<br />
         Over Generations
       </h2>
-      <div class="video-box">
-        <iframe
-          src="https://www.youtube.com/embed/YVQ2WA0SBMM?controls=1&rel=0&modestbranding=1&enablejsapi=1"
-          allow="encrypted-media"
-          allowfullscreen></iframe>
+      <div class="testimonial-card">
+        <blockquote class="testimonial-quote">
+          “A team that truly understands the client's vision and brings it to life without compromise. Building trust with every project.”
+        </blockquote>
+        <div class="testimonial-author">
+          <span class="testimonial-name">White House Project</span>
+          <span class="testimonial-role">Turnkey Completion, Dream City</span>
+        </div>
       </div>
     </div>
   </div>
@@ -211,19 +223,58 @@
     gap: 1.5rem;
   }
 
-  .video-box {
+
+  /* ───────── Testimonial text cards ───────── */
+  .testimonial-card {
     width: 100%;
-    aspect-ratio: 16 / 9;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-    background: #000;
+    max-width: 720px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
   }
 
-  .video-box iframe {
-    width: 100%;
-    height: 100%;
-    border: 0;
+  .testimonial-quote {
+    font-family: "Barlow", sans-serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    font-weight: 300;
+    line-height: 1.7;
+    color: #d1d5db;
+    font-style: italic;
+    margin: 0;
+    position: relative;
+  }
+
+  .testimonial-quote::before {
+    content: "\201C";
+    display: block;
+    font-size: 4rem;
+    line-height: 1;
+    color: #ef4444;
+    font-family: serif;
+    margin-bottom: -0.75rem;
+  }
+
+  .testimonial-author {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .testimonial-name {
+    font-family: "Barlow Condensed", sans-serif;
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    font-weight: 600;
+    color: #f3f4f6;
+    letter-spacing: 0.04em;
+  }
+
+  .testimonial-role {
+    font-family: "Barlow", sans-serif;
+    font-size: clamp(0.8rem, 1.2vw, 0.95rem);
+    font-weight: 300;
+    color: #9ca3af;
   }
 
   /* ───────── Responsive ───────── */
@@ -238,6 +289,14 @@
 
     .video-card-inner {
       gap: 1rem;
+    }
+
+    .testimonial-card {
+      gap: 1rem;
+    }
+
+    .testimonial-quote::before {
+      font-size: 3rem;
     }
   }
 </style>

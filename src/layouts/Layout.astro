@@ -11,6 +11,11 @@ import WhatsAppButton from "../components/WhatsAppButton.astro";
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
 		<title>Prominent For Design &amp; Construction</title>
+		<!-- Hero video preload — high priority -->
+		<link rel="preload" as="video" href="/video-bg.webm" fetchpriority="high" type="video/webm" />
+		<link rel="preload" as="video" href="/video-bg.mp4" fetchpriority="high" type="video/mp4" />
+		<!-- Hero poster (shown instantly, replaces video as LCP content) -->
+		<link rel="preload" as="image" href="/images/hero-bg.avif" fetchpriority="high" />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link

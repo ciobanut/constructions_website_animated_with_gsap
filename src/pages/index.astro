@@ -26,18 +26,23 @@ const services = (await getCollection("services")).sort(
   <main class="main-content z-10 relative">
     <!-- Hero Section -->
     <section id="home" class="hero">
-      <!-- YouTube video background -->
+      <!-- Video background — multi-format sources with poster fallback -->
       <div class="video-wrapper">
-        <video class="hero__media hero__media--video" src="/video-bg.mp4" poster="" autoplay="" loop="" muted="" playsinline="" preload="auto" data-dynamic-id="csp-6318a942877f"></video>
+        <video
+          id="hero-video"
+          class="hero__media hero__media--video"
+          poster="/images/hero-bg.avif"
+          autoplay
+          loop
+          muted
+          playsinline
+          preload="metadata"
+          fetchpriority="high"
+        >
+          <source src="/video-bg.webm" type="video/webm">
+          <source src="/video-bg.mp4" type="video/mp4">
+        </video>
       </div>
-
-      <!-- Fallback image — shown while video loads, then faded out via GSAP -->
-      <img
-        id="hero-fallback"
-        src="/images/hero-bg.avif"
-        alt=""
-        class="hero-fallback"
-      />
 
       <!-- Dark overlay for readability -->
       <div class="overlay"></div>
@@ -70,69 +75,7 @@ const services = (await getCollection("services")).sort(
 <script>
   import { gsap } from "gsap";
 
-  // --- Hero image → video transition (slow zoom-out, accelerates on video ready) ---
-  const fallback = document.getElementById("hero-fallback");
-  const iframe = document.querySelector(".video-wrapper iframe");
-
-  if (fallback) {
-    let transitionStarted = false;
-
-    // Slow zoom-out starts immediately on page load (image starts at scale 1.1)
-    gsap.fromTo(
-      fallback,
-      { scale: 1.1 },
-      {
-        scale: 1.0,
-        duration: 6,
-        ease: "none",
-        onComplete: () => {
-          // Restart video from 0:00 so it feels like it starts fresh
-          (iframe as HTMLIFrameElement)?.contentWindow?.postMessage(
-            JSON.stringify({
-              event: "command",
-              func: "seekTo",
-              args: [0, true],
-            }),
-            "https://www.youtube.com",
-          );
-        },
-      },
-    );
-
-    function accelerateTransition() {
-      if (transitionStarted) return;
-      transitionStarted = true;
-
-      // Interrupt the slow tween: fast zoom-out completion + fade to 0
-      gsap.to(fallback, {
-        scale: 1.0,
-        opacity: 0,
-        duration: 1,
-        ease: "power2.inOut",
-        overwrite: "auto",
-        onComplete: () => {
-          fallback?.remove();
-        },
-      });
-    }
-
-    // Safety: force fade after 6s (matches slow-tween duration)
-    setTimeout(accelerateTransition, 6000);
-
-    // YouTube Player API: accelerate when video starts playing
-    window.addEventListener("message", (event) => {
-      if (
-        event.origin === "https://www.youtube.com" &&
-        event.data &&
-        event.data.event === "onStateChange" &&
-        event.data.info === 1 // YT.PlayerState.PLAYING
-      ) {
-        accelerateTransition();
-      }
-    });
-  }
-
-  // --- Title animations (unchanged) ---
+  // --- Title animations ---
   gsap.from(".animated-title .char", {
     y: 60,
     opacity: 0,
@@ -175,17 +118,6 @@ const services = (await getCollection("services")).sort(
     height: 100%;
     border: 0;
     object-fit: cover;
-  }
-
-  .hero-fallback {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 0;
-    will-change: transform, opacity;
-    transform: scale(1.1);
   }
 
   .overlay {
