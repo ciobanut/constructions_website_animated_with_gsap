@@ -111,6 +111,17 @@ const { services } = Astro.props;
     let isTransitioning = false;
     let activeTween: gsap.core.Timeline | null = null;
 
+    // --- Preload all service background images so they are ready on hover ---
+    const preloadImages = new Set<string>();
+    items.forEach((item) => {
+      const bg = item.getAttribute("data-bg-image");
+      if (bg) preloadImages.add(bg);
+    });
+    preloadImages.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+
     // Check reduced motion preference
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"

@@ -6,7 +6,7 @@ shortDescription: "Professional HVAC, plumbing, and mechanical system installati
 description: "Prominent provides complete mechanical works for construction projects, ensuring that every building operates efficiently and comfortably."
 icon: "settings"
 featured: false
-image: "public/images/services/mechanical-works.avif"
+image: "/images/services/mechanical-works.avif"
 ---
 
 Prominent provides complete mechanical works for construction projects, ensuring that every building operates efficiently and comfortably.
