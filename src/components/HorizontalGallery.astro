@@ -26,7 +26,7 @@ const { projects } = Astro.props;
           Delivering quality construction and design solutions across Iraq and
           beyond
         </p>
-        <Button variant="whatsapp" size="lg" data-view-all class="mt-8">View All Projects</Button>
+        <Button variant="outline" size="lg" data-view-all class="mt-8">View All Projects</Button>
       </div>
     </div>
 
@@ -131,19 +131,23 @@ const { projects } = Astro.props;
 
     // ── 3. Intro content entrance animation ────────────────────────
     if (introContent) {
-      const introChildren = introContent.children;
-      gsap.from(introChildren, {
-        y: 60,
-        opacity: 0,
-        duration: 1,
-        stagger: 0.15,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: container,
-          start: "top 90%",
-          toggleActions: "play none none none",
+      const introChildren = gsap.utils.toArray(introContent.children);
+      gsap.fromTo(
+        introChildren,
+        { y: 60, autoAlpha: 0 },
+        {
+          y: 0,
+          autoAlpha: 1,
+          duration: 1,
+          stagger: 0.15,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: container,
+            start: "top 90%",
+            toggleActions: "play none none none",
+          },
         },
-      });
+      );
     }
 
     // ── 4. View All → scroll to first project slide ────────────────
