@@ -1,0 +1,78 @@
+---
+import { cva } from "class-variance-authority";
+import { cn } from "../../lib/utils";
+
+export interface Props {
+  variant?:
+    | "outline"
+    | "filled"
+    | "whatsapp"
+    | "whatsapp-outline"
+    | "ghost"
+    | "glass"
+    | "link";
+  size?: "sm" | "default" | "lg" | "icon";
+  href?: string;
+  type?: "button" | "submit" | "reset";
+  class?: string;
+  id?: string;
+}
+
+const {
+  variant = "outline",
+  size = "default",
+  href,
+  type = "button",
+  class: className,
+  id,
+  ...attrs
+} = Astro.props;
+
+const buttonVariants = cva(
+  "inline-flex items-center justify-center whitespace-nowrap font-['Barlow_Condensed'] text-sm uppercase tracking-[0.08em] font-bold transition-all duration-300 ease-out cursor-pointer select-none disabled:pointer-events-none disabled:opacity-50 no-underline",
+  {
+    variants: {
+      variant: {
+        outline:
+          "text-[#f3f4f6] border border-[#f3f4f6] bg-transparent hover:bg-white hover:text-[#0c0c0c] hover:scale-[1.05] active:scale-[0.97]",
+        filled:
+          "bg-white text-[#0c0c0c] hover:bg-white/90 hover:scale-[1.03] active:scale-[0.97]",
+        whatsapp:
+          "bg-[#25d366] text-white hover:bg-[#20bd5a] hover:scale-[1.03] active:scale-[0.97]",
+        "whatsapp-outline":
+          "text-[#f3f4f6] border border-[#f3f4f6]/60 bg-transparent hover:bg-white hover:text-[#0c0c0c] hover:scale-[1.05] active:scale-[0.97]",
+        ghost:
+          "text-white/80 hover:text-white hover:bg-white/10 active:scale-[0.97]",
+        glass:
+          "bg-white/10 border border-white/20 backdrop-blur-md text-white/90 hover:bg-white/20 hover:border-white/40 hover:scale-[1.08] active:scale-[0.92] rounded-full",
+        link:
+          "text-white/70 hover:text-white border-b border-transparent hover:border-white transition-all duration-300 pb-0.5",
+      },
+      size: {
+        sm: "px-4 py-2 text-xs gap-1.5",
+        default: "px-8 py-3 gap-2",
+        lg: "px-12 py-4 text-base gap-2.5",
+        icon: "w-12 h-12 rounded-full p-0 justify-center",
+      },
+    },
+    defaultVariants: {
+      variant: "outline",
+      size: "default",
+    },
+  },
+);
+
+const computedClass = cn(buttonVariants({ variant, size }), className);
+---
+
+{
+  href ? (
+    <a href={href} class={computedClass} id={id} {...attrs}>
+      <slot />
+    </a>
+  ) : (
+    <button type={type} class={computedClass} id={id} {...attrs}>
+      <slot />
+    </button>
+  )
+}

@@ -4,6 +4,7 @@ import Layout from "../../layouts/Layout.astro";
 import Footer from "../../components/Footer.astro";
 import ProjectGallery from "../../components/ProjectGallery.astro";
 import HeroCover from "../../components/HeroCover.astro";
+import Button from "../../components/ui/Button.astro";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
@@ -46,13 +47,15 @@ const metaDescription = data.location
     />
 
     <!-- Scroll Down Indicator -->
-    <button
+    <Button
+      variant="glass"
+      size="icon"
       id="scroll-down-btn"
-      class="scroll-down-btn absolute bottom-8 left-1/2 -translate-x-1/2 z-20 w-12 h-12 rounded-full flex items-center justify-center cursor-pointer"
+      class="absolute bottom-8 left-1/2 -translate-x-1/2 z-20"
       aria-label="Scroll down"
     >
       <svg
-        class="w-5 h-5 text-white/90"
+        class="w-5 h-5"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
         fill="none"
@@ -63,7 +66,7 @@ const metaDescription = data.location
       >
         <path d="M12 5v14M5 12l7 7 7-7"></path>
       </svg>
-    </button>
+    </Button>
   </section>
 
   <!-- Main Content -->
@@ -88,7 +91,7 @@ const metaDescription = data.location
             prevProject ? (
               <a
                 href={`/projects/${prevProject.data.slug}`}
-                class="flex items-center gap-3 group text-gray-500 hover:text-white transition-colors duration-300"
+                class="flex items-center gap-3 group text-gray-500 hover:text-white transition-all duration-300 ease-out active:scale-[0.97]"
               >
                 <svg
                   class="w-5 h-5 transition-transform group-hover:-translate-x-1"
@@ -120,7 +123,7 @@ const metaDescription = data.location
             nextProject ? (
               <a
                 href={`/projects/${nextProject.data.slug}`}
-                class="flex items-center gap-3 group text-gray-500 hover:text-white transition-colors duration-300 text-right"
+                class="flex items-center gap-3 group text-gray-500 hover:text-white transition-all duration-300 ease-out text-right active:scale-[0.97]"
               >
                 <div>
                   <p class="text-xs uppercase tracking-widest text-gray-400">
@@ -186,21 +189,3 @@ const metaDescription = data.location
   }
 </script>
 
-<style>
-  .scroll-down-btn {
-    background: rgba(255, 255, 255, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    transition:
-      background 0.3s ease-out,
-      border-color 0.3s ease-out,
-      transform 0.3s ease-out;
-  }
-
-  .scroll-down-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.6);
-    transform: scale(1.08) !important;
-  }
-</style>

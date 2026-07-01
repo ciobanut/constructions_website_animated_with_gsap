@@ -1,4 +1,6 @@
 ---
+import Button from "./ui/Button.astro";
+
 export interface Props {
   coverImage: string;
   title: string;
@@ -70,14 +72,11 @@ const {
   </div>
 
   {backHref && (
-    <a
-      href={backHref}
-      class="absolute top-6 left-6 text-white/80 hover:text-white flex items-center gap-2 text-sm font-medium transition-colors bg-black/20 backdrop-blur-sm px-4 py-2 rounded-full"
-    >
+    <Button variant="glass" size="sm" href={backHref} class="absolute top-6 left-6 z-30">
       <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M15 6l-6 6l6 6" />
       </svg>
       {backLabel}
-    </a>
+    </Button>
   )}
 </section>
